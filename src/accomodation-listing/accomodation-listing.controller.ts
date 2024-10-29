@@ -19,16 +19,16 @@ export class AccomodationListingController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.accomodationListingService.findOne(+id);
+    return this.accomodationListingService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAccomodationListingDto: UpdateAccomodationListingDto) {
-    return this.accomodationListingService.update(+id, updateAccomodationListingDto);
+    return this.accomodationListingService.update(id, updateAccomodationListingDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.accomodationListingService.remove(+id);
+    return this.accomodationListingService.remove(id);
   }
 }

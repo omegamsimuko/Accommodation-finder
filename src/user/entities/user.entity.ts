@@ -1,9 +1,12 @@
+import { propertyowner } from 'src/propertyowner/entities/propertyowner.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { EstateAgent } from 'src/estate-agent/entities/estate-agent.entity';
+import { AccomodationListing } from 'src/accomodation-listing/entities/accomodation-listing.entity';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  userid: string;
 
   @Column()
   name: string;
@@ -13,6 +16,18 @@ export class User {
 
   @Column()
   password: string;
+  
+  @OneToMany(() => propertyowner, propertyowner => propertyowner.user)
+  propertyowner: propertyowner; 
 
-  //@OneToMany(() => Memory, memory => memory.user)
+
+  @OneToMany(() => EstateAgent, estateAgent => estateAgent.user)
+  estateAgents: EstateAgent[]; 
+
+  @OneToMany(()=> AccomodationListing, accomodationListing => accomodationListing.user)
+  accomodationListings: AccomodationListing[];
+
+
+
+  
 }

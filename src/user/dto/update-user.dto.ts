@@ -5,7 +5,7 @@ import { IsEmail, IsString } from "class-validator";
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
     @IsString()
-    username:string
+    name:string
 
     @IsEmail()
     email:string

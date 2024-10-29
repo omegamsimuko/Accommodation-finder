@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAccomodationListingDto } from './dto/create-accomodation-listing.dto';
 import { UpdateAccomodationListingDto } from './dto/update-accomodation-listing.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { AccomodationListing } from './entities/accomodation-listing.entity';
+
 
 @Injectable()
 export class AccomodationListingService {
-  create(createAccomodationListingDto: CreateAccomodationListingDto) {
-    return 'This action adds a new accomodationListing';
+
+  constructor ( 
+    @InjectRepository(AccomodationListing)
+ private readonly AccomodationRepository: Repository <AccomodationListing> ){} 
+
+  async findByUserId(userId: string): Promise<AccomodationListing| null> {
+    return this.AccomodationRepository.findOne({ where: { user_id: userId } });
+  }
+
+
+  create(CreateAccomodationListingDto: CreateAccomodationListingDto) {
+    return this.AccomodationRepository.save(CreateAccomodationListingDto);
   }
 
   findAll() {
-    return `This action returns all accomodationListing`;
+    return this.AccomodationRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} accomodationListing`;
+  findOne(id: string) {
+    return this.AccomodationRepository.findOneBy({});
   }
 
-  update(id: number, updateAccomodationListingDto: UpdateAccomodationListingDto) {
-    return `This action updates a #${id} accomodationListing`;
+  update(id: string, UpdateAccomodationListingDto: UpdateAccomodationListingDto) {
+    return this.AccomodationRepository.update(id,UpdateAccomodationListingDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} accomodationListing`;
+  remove(id: string) {
+    return this.AccomodationRepository.delete(id);
   }
 }
