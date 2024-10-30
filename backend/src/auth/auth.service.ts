@@ -29,9 +29,21 @@ export class AuthService {
       return 'This action adds a new auth';
   }
 
-  
-  async validate(validateUser: LoginDto){
 
+  async validate(validateUser: LoginDto):Promise<{token: string}>{
+      
+    let token = this.agentService.validate(validateUser);
+    if (token != null)
+      return token;
+
+    token = this.studentService.validate(validateUser);
+    if (token != null)
+      return token;
+
+    token = this.onwerService.validate(validateUser);
+    if (token != null)
+      return token;
+  
   }
 
 

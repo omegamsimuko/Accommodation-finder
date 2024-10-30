@@ -21,8 +21,9 @@ export class AuthController {
   }
 
   @Post('/login')
-  validate(@Body() validateUser: LoginDto ){
-    const token = this.authService.validate(validateUser)
+  validate(@Body() validateUser: LoginDto ):Promise<{token: string}>{
+    const token = this.authService.validate(validateUser);
+    return token;
   }
 
  

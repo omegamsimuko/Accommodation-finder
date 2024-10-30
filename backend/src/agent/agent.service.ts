@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable,UnauthorizedException } from '@nestjs/common';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { UpdateAgentDto } from './dto/update-agent.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Agent } from './entities/agent.entity';
 import { SignUpDto } from 'src/auth/dto/SignUp.dto';
+import { LoginDto } from 'src/auth/dto/LogIn.dto';
+import * as bcrypt from 'bcryptjs';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AgentService {
@@ -12,7 +15,7 @@ export class AgentService {
   constructor(
     @InjectRepository(Agent)
     private agentRepository: Repository<Agent>,
-  
+    private jwtService: JwtService
   ){}
   
 
@@ -33,7 +36,20 @@ export class AgentService {
     return 'This action adds a new agent';
   }
 
-  async validate(validateUser: LogInDto){
+  async validate(validateUser: LoginDto):Promise<{token: string}>{
+
+    const {email,password} = validateUser;
+
+    const user = await this.agentRepository.findOne({where: {email}});
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!user || !passwordMatch)
+      throw new UnauthorizedException('Invalid email or password'); 
+
+    const token = this.jwtService.sign({id: user.id});
+
+
+    return {token};
 
   }
   

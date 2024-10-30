@@ -1,18 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { SignUpDto } from 'src/auth/dto/SignUp.dto';
+import { LoginDto } from 'src/auth/dto/LogIn.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity';
 import { Repository } from 'typeorm';
-
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcryptjs'
 @Injectable()
 export class StudentService {
  
  
   constructor(
     @InjectRepository(Student)
-    private studentRepository: Repository<Student>
+    private studentRepository: Repository<Student>,
+    private jwtService: JwtService
  
 ){}
 
@@ -32,6 +35,22 @@ export class StudentService {
     await this.studentRepository.save(newAgent);
 
     return 'This action adds a new student';
+  }
+
+  async validate(validateUser : LoginDto): Promise<{token: string}>{
+
+    const {email,password} = validateUser;
+
+    const user = await this.studentRepository.findOne({where: {email}});
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!user || !passwordMatch)
+      throw new UnauthorizedException('Invalid email or password'); 
+
+    const token = this.jwtService.sign({id: user.id});
+
+    return {token};
+
   }
 
   findAll() {
