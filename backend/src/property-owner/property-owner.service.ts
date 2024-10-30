@@ -41,11 +41,15 @@ export class PropertyOwnerService {
     const {email,password} = validateUser;
 
     const user = await this.propertyOwnerRepository.findOne({where: {email}});
+
+    if (!user)
+      throw new UnauthorizedException('Invalid email or password');
+
     const passwordMatch = await bcrypt.compare(password, user.password);
 
-    if (!user || !passwordMatch)
-      throw new UnauthorizedException('Invalid email or password'); 
-
+    if (!passwordMatch)
+      throw new UnauthorizedException('Invalid email or password');
+    
     const token = this.jwtService.sign({id: user.id});
 
     return {token};
