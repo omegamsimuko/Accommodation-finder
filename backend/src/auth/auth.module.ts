@@ -4,6 +4,7 @@ import { AgentModule } from 'src/agent/agent.module';
 import { PropertyOwnerModule } from 'src/property-owner/property-owner.module';
 import { StudentModule } from 'src/student/student.module';
 import { AuthController } from './auth.controller';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [StudentModule, AgentModule, PropertyOwnerModule],

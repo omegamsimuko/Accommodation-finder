@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { LoginDto } from 'src/auth/dto/LogIn.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+
 @Injectable()
 export class PropertyOwnerService {
 
