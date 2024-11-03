@@ -12,7 +12,7 @@ export class CreateAccomodationListingDto {
 
     @IsNotEmpty()
     @IsNumber()
-    price_per_month: number;
+    rental_fee: number;
   
     @IsNotEmpty()
     @IsString()
@@ -22,9 +22,7 @@ export class CreateAccomodationListingDto {
     @IsString()
     availability_status: string;
   
-    @IsNotEmpty()
-    @IsString()
-    date_posted: string;
+
   
     @IsNotEmpty()
     @IsString()
@@ -34,6 +32,11 @@ export class CreateAccomodationListingDto {
     @IsString()
     @IsArray()
     images: string[];
+
+    @IsNotEmpty()
+    @IsString()
+    @IsArray()
+    thumbnail_image: string;
 
     
     

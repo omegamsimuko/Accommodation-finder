@@ -14,7 +14,7 @@ export class UpdateAccomodationListingDto extends PartialType(CreateAccomodation
 
     @IsOptional()
     @IsNumber()
-    price_per_month: number;
+    rental_fee: number;
   
     @IsOptional()
     @IsString()
@@ -26,14 +26,14 @@ export class UpdateAccomodationListingDto extends PartialType(CreateAccomodation
   
     @IsOptional()
     @IsString()
-    date_posted: string;
-  
-    @IsOptional()
-    @IsString()
     utilities_included: string[];
 
     @IsOptional()
     @IsString()
     images: string[];
+
+    @IsOptional()
+    @IsString()
+    thumbnail_image: string;
 
 }

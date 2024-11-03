@@ -13,6 +13,7 @@ export class UserController {
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({ status: 201, description: 'User created successfully.' })
   @ApiResponse({ status: 400, description: 'Invalid input.' })
+  
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
