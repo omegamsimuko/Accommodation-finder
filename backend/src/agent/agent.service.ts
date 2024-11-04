@@ -1,4 +1,4 @@
-import { Injectable,UnauthorizedException } from '@nestjs/common';
+import { Injectable,ConflictException } from '@nestjs/common';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { UpdateAgentDto } from './dto/update-agent.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -42,26 +42,36 @@ export class AgentService {
 
     const {email,password} = validateUser;
     
-      const user = await this.agentRepository.findOne({where: {email}});
+    const user = await this.agentRepository.findOne({where: {email}});
     
-    if (!user)
-      return null;
-
-    const passwordMatch = await bcrypt.compare(password, user.password);
-
-    if (!passwordMatch)
-      return null; 
-
-    const token = this.jwtService.sign({id: user.id});
-
+      if (!user)
+        return null;
+      
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      
+      if (!passwordMatch)
+        return null; 
+      
+      const token = this.jwtService.sign({id: user.id});
+      
     return {token};
 
   }
   
-  findAll() {
-    return `This action returns all agent`;
+  async findOneByEmail(user : SignUpDto): Promise<boolean> {
+    const {email} = user;
+    const check = await this.agentRepository.findOne({where:{email}})
+
+    if (!check)
+      return false;
+    else
+      return true;
+    
   }
 
+  findAll() {
+    return `This action returns all propertyOwner`;
+  }
   findOne(id: number) {
     return `This action returns a #${id} agent`;
   }

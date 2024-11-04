@@ -1,4 +1,4 @@
-import { Injectable,UnauthorizedException } from '@nestjs/common';
+import { Injectable,ConflictException } from '@nestjs/common';
 import { CreatePropertyOwnerDto } from './dto/create-property-owner.dto';
 import { UpdatePropertyOwnerDto } from './dto/update-property-owner.dto';
 import { SignUpDto } from 'src/auth/dto/SignUp.dto';
@@ -57,6 +57,17 @@ export class PropertyOwnerService {
 
     return {token};
 
+  }
+
+  async findOneByEmail(user : SignUpDto): Promise<boolean> {
+    const {email} = user;
+    const check = await this.propertyOwnerRepository.findOne({where:{email}})
+
+    if (!check)
+      return false;
+    else
+      return true;
+    
   }
 
   findAll() {

@@ -1,4 +1,4 @@
-import { Injectable,UnauthorizedException } from '@nestjs/common';
+import { Injectable,UnauthorizedException,ConflictException } from '@nestjs/common';
 import { SignUpDto } from './dto/SignUp.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { AgentService } from 'src/agent/agent.service';
@@ -17,6 +17,14 @@ export class AuthService {
 
   async create(createAuthDto: SignUpDto): Promise<{token: string}> {
 
+    const check = await this.agentService.findOneByEmail(createAuthDto);
+    const check2 = await this.onwerService.findOneByEmail(createAuthDto);
+    const check3 = await this.studentService.findOneByEmail(createAuthDto);
+    
+    if (check || check2 || check3)
+      throw new ConflictException('email address already in use');
+
+
     if (createAuthDto.isOwner)
       return this.onwerService.create(createAuthDto);
     
@@ -31,16 +39,16 @@ export class AuthService {
 
   async validate(validateUser: LoginDto):Promise<{token: string}>{
       
-    const token = this.agentService.validate(validateUser);
-    if (token != null)
-      return token;
+    const token = await this.agentService.validate(validateUser);
+    if (token !== null )
+      return  token;
 
-    const token1 = this.studentService.validate(validateUser);
-    if (token1 != null)
+    const token1 = await this.studentService.validate(validateUser);
+    if (token1 !== null)
       return token1;
 
-    const token2 = this.onwerService.validate(validateUser);
-    if (token2 != null)
+    const token2 = await this.onwerService.validate(validateUser);
+    if (token2 !== null)
       return token2;
 
     throw new UnauthorizedException('Invalid email or password');

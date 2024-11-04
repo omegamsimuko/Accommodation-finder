@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, ConflictException} from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { SignUpDto } from 'src/auth/dto/SignUp.dto';
@@ -23,7 +23,7 @@ export class StudentService {
   async create(createStudentDto: SignUpDto):Promise<{token:string}> {
     const name = (createStudentDto.firstName + " "+ createStudentDto.lastName);
     const {email,password,phoneNumber} = createStudentDto;
-
+    console.log("this is the student class");
     const newStudent = await this.studentRepository.create({
       name: name,
       email: email,
@@ -47,7 +47,7 @@ export class StudentService {
     
     if (!user)
       return null;
-
+    
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch)
@@ -57,6 +57,18 @@ export class StudentService {
 
     return {token};
 
+  }
+
+
+  async findOneByEmail(user : SignUpDto): Promise<boolean> {
+    const {email} = user;
+    const check = await this.studentRepository.findOne({where:{email}})
+
+    if (!check)
+      return false;
+    else
+      return true;
+    
   }
 
   findAll() {
