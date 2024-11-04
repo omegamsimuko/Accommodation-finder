@@ -20,11 +20,11 @@ export class StudentService {
 ){}
 
 
-  async create(createStudentDto: SignUpDto) {
-    const name = (createStudentDto.firstName + createStudentDto.lastName);
+  async create(createStudentDto: SignUpDto):Promise<{token:string}> {
+    const name = (createStudentDto.firstName + " "+ createStudentDto.lastName);
     const {email,password,phoneNumber} = createStudentDto;
 
-    const newAgent = await this.studentRepository.create({
+    const newStudent = await this.studentRepository.create({
       name: name,
       email: email,
       password: password,
@@ -32,9 +32,11 @@ export class StudentService {
 
     })
 
-    await this.studentRepository.save(newAgent);
+    await this.studentRepository.save(newStudent);
 
-    return 'This action adds a new student';
+    const token = this.jwtService.sign({id: newStudent.id})
+
+    return {token};
   }
 
   async validate(validateUser : LoginDto): Promise<{token: string}>{
@@ -44,12 +46,12 @@ export class StudentService {
     const user = await this.studentRepository.findOne({where: {email}});
     
     if (!user)
-      throw new UnauthorizedException('Invalid email or password');
+      return null;
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch)
-      throw new UnauthorizedException('Invalid email or password');
+      return null;
 
     const token = this.jwtService.sign({id: user.id});
 

@@ -13,17 +13,15 @@ export class AuthController {
   constructor( private readonly authService: AuthService) {}
 
   @Post('/signup')
-  create(@Body() createUser: SignUpDto) {
+  create(@Body() createUser: SignUpDto):Promise<{token: string}> {
+     return this.authService.create(createUser);
 
-     const token = this.authService.create(createUser);
-
-     return token;
   }
 
   @Post('/login')
   validate(@Body() validateUser: LoginDto ):Promise<{token: string}>{
-    const token = this.authService.validate(validateUser);
-    return token;
+    return this.authService.validate(validateUser);
+    
   }
 
  

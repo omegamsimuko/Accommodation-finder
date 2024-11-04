@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable,UnauthorizedException } from '@nestjs/common';
 import { SignUpDto } from './dto/SignUp.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { AgentService } from 'src/agent/agent.service';
@@ -15,35 +15,36 @@ export class AuthService {
   ){}
 
 
-  async create(createAuthDto: SignUpDto) {
+  async create(createAuthDto: SignUpDto): Promise<{token: string}> {
 
     if (createAuthDto.isOwner)
-        this.onwerService.create(createAuthDto);
+      return this.onwerService.create(createAuthDto);
     
     else if(createAuthDto.isAgent)
-      this.agentService.create(createAuthDto);
+      return this.agentService.create(createAuthDto);
     
     else
-      this.studentService.create(createAuthDto);
+      return this.studentService.create(createAuthDto);
   
-      return 'This action adds a new auth';
   }
 
 
   async validate(validateUser: LoginDto):Promise<{token: string}>{
       
-    let token = this.agentService.validate(validateUser);
+    const token = this.agentService.validate(validateUser);
     if (token != null)
       return token;
 
-    token = this.studentService.validate(validateUser);
-    if (token != null)
-      return token;
+    const token1 = this.studentService.validate(validateUser);
+    if (token1 != null)
+      return token1;
 
-    token = this.onwerService.validate(validateUser);
-    if (token != null)
-      return token;
-  
+    const token2 = this.onwerService.validate(validateUser);
+    if (token2 != null)
+      return token2;
+
+    throw new UnauthorizedException('Invalid email or password');
+    
   }
 
 

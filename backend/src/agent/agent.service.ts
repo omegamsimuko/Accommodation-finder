@@ -19,8 +19,8 @@ export class AgentService {
   ){}
   
 
- async create(createAgentDto: SignUpDto) {
-    const name = (createAgentDto.firstName + createAgentDto.lastName);
+ async create(createAgentDto: SignUpDto): Promise<{token: string}> {
+    const name = (createAgentDto.firstName + " "+ createAgentDto.lastName);
     const {email,password,phoneNumber} = createAgentDto;
 
     const newAgent = await this.agentRepository.create({
@@ -33,25 +33,26 @@ export class AgentService {
 
     await this.agentRepository.save(newAgent);
 
-    return 'This action adds a new agent';
+    const token = this.jwtService.sign({id: newAgent.id})
+
+    return {token};
   }
 
   async validate(validateUser: LoginDto):Promise<{token: string}>{
 
     const {email,password} = validateUser;
-
-    const user = await this.agentRepository.findOne({where: {email}});
-
+    
+      const user = await this.agentRepository.findOne({where: {email}});
+    
     if (!user)
-      throw new UnauthorizedException('Invalid email or password');
+      return null;
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch)
-      throw new UnauthorizedException('Invalid email or password'); 
+      return null; 
 
     const token = this.jwtService.sign({id: user.id});
-
 
     return {token};
 

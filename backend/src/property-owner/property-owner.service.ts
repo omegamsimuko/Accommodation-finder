@@ -19,8 +19,8 @@ export class PropertyOwnerService {
 
   ){}
 
-  async create(createPropertyOwnerDto: SignUpDto) {
-    const name = (createPropertyOwnerDto.firstName + createPropertyOwnerDto.lastName);
+  async create(createPropertyOwnerDto: SignUpDto):Promise<{token : string}> {
+    const name = (createPropertyOwnerDto.firstName + " " +createPropertyOwnerDto.lastName);
     const {email,password,phoneNumber} = createPropertyOwnerDto;
 
     const newOwner = await this.propertyOwnerRepository.create({
@@ -33,7 +33,10 @@ export class PropertyOwnerService {
 
     await this.propertyOwnerRepository.save(newOwner);
 
-    return 'This action adds a new propertyOwner';
+    const token = this.jwtService.sign({id: newOwner.id})
+
+    return {token};
+  
   }
 
   async validate(validateUser : LoginDto): Promise<{token: string}>{
@@ -43,12 +46,12 @@ export class PropertyOwnerService {
     const user = await this.propertyOwnerRepository.findOne({where: {email}});
 
     if (!user)
-      throw new UnauthorizedException('Invalid email or password');
+      return null;
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch)
-      throw new UnauthorizedException('Invalid email or password');
+      return null;
     
     const token = this.jwtService.sign({id: user.id});
 
