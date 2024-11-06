@@ -4,7 +4,6 @@ import { Strategy, ExtractJwt } from 'passport-jwt';
 import { AgentService } from 'src/agent/agent.service';
 import { PropertyOwnerService } from 'src/property-owner/property-owner.service';
 import { StudentService } from 'src/student/student.service';
-import { AuthService } from './auth.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -23,17 +22,25 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload) {
-    const { id } = payload;
 
-    const user = await this.agentService.findOneById(id);
-    const user2 = await this.onwerService.findOneById(id);
-    const user3 = await this.studentService.findOneById(id);
-    
-    if (!user && !user2 && !user3)
-        throw new UnauthorizedException('Login first to access the resource.');
+    let user
 
-    
+    user = await this.onwerService.findOneById(payload.id);
+    if (user) 
+        return { id: user.id, role: user.role };
 
-    return user;
+    user = await this.agentService.findOneById(payload.id);
+    if (user) 
+        return { id: user.id, role: user.role };
+
+    user = await this.studentService.findOneById(payload.id);
+    if (user) 
+        return { id: user.id, role: user.role };
+
+    //user not found
+    throw new UnauthorizedException('Login first to access the resource.');
+
+
   }
+
 }

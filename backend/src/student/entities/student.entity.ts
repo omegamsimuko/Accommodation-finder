@@ -18,4 +18,6 @@ export class Student {
     @Column()
     phoneNumber : string;
 
+    @Column({ default: 'student' })
+    role: string; // Default role for Student
 }
