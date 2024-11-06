@@ -71,6 +71,17 @@ export class PropertyOwnerService {
     
   }
 
+  async findOneById(id: string) {
+    
+    const user = await this.propertyOwnerRepository.findOne({where:{id: id}});
+
+    if (!user)
+      return null;
+
+    return user;
+
+  }
+
   findAll() {
     return `This action returns all propertyOwner`;
   }

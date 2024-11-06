@@ -16,4 +16,6 @@ export class PropertyOwner {
 
     @Column()
     phoneNumber : string;
+
+    
 }

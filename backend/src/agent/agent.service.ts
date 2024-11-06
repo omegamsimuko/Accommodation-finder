@@ -69,11 +69,16 @@ export class AgentService {
     
   }
 
-  findAll() {
-    return `This action returns all propertyOwner`;
-  }
-  findOne(id: number) {
-    return `This action returns a #${id} agent`;
+  
+  async findOneById(id: string) {
+    
+    const user = await this.agentRepository.findOne({where:{id: id}});
+
+    if (!user)
+      return null;
+
+    return user;
+
   }
 
   update(id: number, updateAgentDto: UpdateAgentDto) {
