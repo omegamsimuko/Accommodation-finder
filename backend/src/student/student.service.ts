@@ -23,11 +23,12 @@ export class StudentService {
   async create(createStudentDto: SignUpDto):Promise<{token:string}> {
     const name = (createStudentDto.firstName + " "+ createStudentDto.lastName);
     const {email,password,phoneNumber} = createStudentDto;
-    console.log("this is the student class");
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newStudent = await this.studentRepository.create({
       name: name,
       email: email,
-      password: password,
+      password: hashedPassword,
       phoneNumber: phoneNumber
 
     })
@@ -35,7 +36,7 @@ export class StudentService {
     await this.studentRepository.save(newStudent);
 
     const token = this.jwtService.sign({id: newStudent.id})
-
+    
     return {token};
   }
 

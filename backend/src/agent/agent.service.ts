@@ -22,19 +22,19 @@ export class AgentService {
  async create(createAgentDto: SignUpDto): Promise<{token: string}> {
     const name = (createAgentDto.firstName + " "+ createAgentDto.lastName);
     const {email,password,phoneNumber} = createAgentDto;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newAgent = await this.agentRepository.create({
       name: name,
       email: email,
-      password: password,
+      password: hashedPassword,
       phoneNumber: phoneNumber
 
     })
 
     await this.agentRepository.save(newAgent);
 
-    const token = this.jwtService.sign({id: newAgent.id})
-
+    const token = this.jwtService.sign({id: newAgent.id});
     return {token};
   }
 
@@ -46,7 +46,7 @@ export class AgentService {
     
       if (!user)
         return null;
-      
+
       const passwordMatch = await bcrypt.compare(password, user.password);
       
       if (!passwordMatch)
