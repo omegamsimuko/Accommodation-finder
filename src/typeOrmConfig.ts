@@ -17,5 +17,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     database: 'accomodationfinder',
     entities: [User, propertyowner, EstateAgent, AccomodationListing, Booking, Searchfiltering], 
     synchronize: true,
+    
   };
   
