@@ -8,5 +8,5 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     password: 'dennis',
     database: 'ifind',
     autoLoadEntities: true,     // Automatically loads all entities
-    synchronize: true,          // Use true only in development
+    synchronize: false,          // Use true only in development
   };
