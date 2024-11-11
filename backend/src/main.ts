@@ -5,10 +5,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
   // Swagger setup
   const options = new DocumentBuilder()
     .setTitle('Accommodation API')
@@ -22,4 +18,3 @@ async function bootstrap() {
   await app.listen(3000);
 }
 bootstrap();
-}
