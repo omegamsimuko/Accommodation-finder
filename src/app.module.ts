@@ -9,11 +9,12 @@ import { PropertyownerModule } from './propertyowner/propertyowner.module';
 import { EstateAgentModule } from './estate-agent/estate-agent.module';
 import { BookingModule } from './booking/booking.module';
 import { SearchfilteringModule } from './searchfiltering/searchfiltering.module';
+import { ApiController } from './ap.icontroller';
 
 
 
 @Module({
-  imports: [AccomodationListingModule,TypeOrmModule.forRoot(typeOrmConfig), UserModule,
+  imports: [ AccomodationListingModule,TypeOrmModule.forRoot(typeOrmConfig), UserModule,
      PropertyownerModule, EstateAgentModule, BookingModule, SearchfilteringModule],
   controllers: [],
   providers: [],

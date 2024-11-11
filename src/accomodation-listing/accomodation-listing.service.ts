@@ -20,16 +20,51 @@ export class AccomodationListingService {
   async findAll(searchDto: Searchfiltering): Promise<AccomodationListing[]> {
     const queryBuilder = this.accommodationRepository.createQueryBuilder('accommodation');
 
-    // You can add filtering based on the searchDto here
-    if (searchDto.location) {
-      queryBuilder.andWhere('accommodation.location = :location', { location: searchDto.location });
+    // Dynamically add filtering conditions based on the searchDto
+    if (searchDto.locationType) {
+      queryBuilder.andWhere('accommodation.locationType = :locationType', {
+        locationType: searchDto.locationType,
+      });
     }
 
-    return queryBuilder.getMany(); // Ensure it returns the query results
+    // Correct the reference to 'searchDto'
+    if (searchDto.spaceAvailable) {
+      queryBuilder.andWhere('accommodation.spaceAvailable >= :spaceAvailable', {
+        spaceAvailable: searchDto.spaceAvailable,
+      });
+    }
+
+    if (searchDto.rentalfee) {
+      queryBuilder.andWhere('accommodation.rentalFee <= :rentalFee', {
+        rentalFee: searchDto.rentalfee,
+      });
+    }
+
+    if (searchDto.roomType) {
+      queryBuilder.andWhere('accommodation.roomType= :roomType', {
+        roomType: searchDto.roomType,
+      });
+    }
+
+    // Example of using ranges (if rental fee has a range filter)
+    if (searchDto.rentalfee_Min) {
+      queryBuilder.andWhere('accommodation.rentalFee >= :rentalfee_Min', {
+        rentalfee_Min: searchDto.rentalfee_Min,
+      });
+    }
+
+    if (searchDto.rentalfee_Max) {
+      queryBuilder.andWhere('accommodation.rentalFee <= :rentalfee_Max', {
+        rentalfee_Max: searchDto.rentalfee_Max,
+      });
+    }
+
+    // Return filtered accommodations based on the search criteria
+    return queryBuilder.getMany();
   }
 
-  async findByUserId(accommodation_id: string): Promise<AccomodationListing | null> {
-    return this.accommodationRepository.findOneBy({ id: accommodation_id }); // Use the correct property name
+  async findByUserId(accomodation_id: string): Promise<AccomodationListing | null> {
+    return this.accommodationRepository.findOneBy({ id: accomodation_id }); // Use the correct property name
   }
 
   async create(createAccomodationListingDto: CreateAccomodationListingDto): Promise<AccomodationListing> {
@@ -44,3 +79,4 @@ export class AccomodationListingService {
     await this.accommodationRepository.delete(id);
   }
 }
+

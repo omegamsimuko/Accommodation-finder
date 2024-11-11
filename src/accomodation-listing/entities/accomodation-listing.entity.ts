@@ -57,13 +57,12 @@ import {
     user:User;
     @JoinColumn({ name: 'propertyowner_id' })
     propertyowner: User;
+   @OneToMany(() => Booking, booking => booking.accomodation)
+   bookings: Booking[];
 
-    @OneToMany(() => Booking, booking => booking.accommodation)
-    bookings: Booking[];
-  
-    
-  
-  
-  
   }
+  
+  
+  
+  
   

@@ -1,20 +1,20 @@
-
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const config = new DocumentBuilder()
-    .setTitle('AccomodationFinder')
-    .setDescription('The accomodationfinder site that will allow students to book a place')
+  // Swagger setup
+  const options = new DocumentBuilder()
+    .setTitle('Accommodation API')
+    .setDescription('The accommodation API description')
     .setVersion('1.0')
-    .addTag('accomodations')
+    .addTag('accommodations') // Tag for organizing endpoints
     .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('swagger', app, document); // Swagger UI at /swagger
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(3000);
 }
 bootstrap();
