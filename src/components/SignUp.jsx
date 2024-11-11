@@ -1,9 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 function SignUpForm() {
     
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, watch, formState: { errors } } = useForm()
     const onSubmit = (data) => {
         console.log("Form data:", data);
         alert("Form submitted!");
@@ -17,20 +18,24 @@ function SignUpForm() {
                     Discover the perfect accommodation for your next stay
                 </p>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    <div className="flex space-x-4">
-                        <input
-                            {...register("firstName", { required: "First name is required" })}
-                            placeholder="First Name"
-                            className="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        />
-                        {errors.firstName && <span className="text-red-500">{errors.firstName.message}</span>}
-                        <input
-                            {...register("lastName", { required: "Last name is required" })}
-                            placeholder="Last Name"
-                            className="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        />
-                        {errors.lastName && <span className="text-red-500">{errors.lastName.message}</span>}
-                    </div>
+                <div className="flex space-x-4">
+                <div className="w-1/2">
+                    <input
+                        {...register("firstName", { required: "First name is required" })}
+                        placeholder="First Name"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                    />
+                    {errors.firstName && <span className="text-red-500">{errors.firstName.message}</span>}
+                </div>
+                <div className="w-1/2">
+                    <input
+                        {...register("lastName", { required: "Last name is required" })}
+                        placeholder="Last Name"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                    />
+                    {errors.lastName && <span className="text-red-500">{errors.lastName.message}</span>}
+                </div>
+            </div>
                     <input
                         {...register("email", {
                             required: "Email is required",
@@ -77,13 +82,10 @@ function SignUpForm() {
                         Submit
                     </button>
                 </form>
-                <p className="text-center text-gray-500 mt-4">Already have an account?</p>
-                <button
-                    onClick={() => alert('Redirect to sign-in page')}
-                    className="w-full py-2 mt-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 focus:outline-none"
-                >
-                    Sign In
-                </button>
+                <div className='flex flex-row justify-center items-center mt-4'>
+                <p className="text-center text-gray-500 mr-4">Already have an account?</p>
+                < Link to ="/" className="text-blue-600 font-medium"> Sign In </Link>
+                </div>
             </div>
         </div>
     );
