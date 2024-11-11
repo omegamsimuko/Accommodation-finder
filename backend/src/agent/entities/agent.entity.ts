@@ -16,12 +16,9 @@ export class Agent {
     @Column()
     password: string;
 
-    @Column()
-    phoneNumber : string;
-
     @Column({ default: 'agent' })
     role: string; // Default role for agent
 
-    @OneToMany(() => AccomodationListing, (listing) => listing.propertyOwner)
-    listings: AccomodationListing[];
+    // @OneToMany(() => AccomodationListing, (listing) => listing.propertyOwner)
+    // listings: AccomodationListing[];
 }

@@ -6,7 +6,6 @@ content-type: application/json
   "lastName": "zukwayo",
    "email" : "beatrice@gmail.com",
   "password" : "dennisojali",
-  "phoneNumber": "+265888224603",
   "isOwner": false,
   "isAgent": false
 }
