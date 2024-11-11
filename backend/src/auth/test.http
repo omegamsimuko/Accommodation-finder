@@ -4,7 +4,7 @@ content-type: application/json
 {
   "firstName": "Dennis",
   "lastName": "zukwayo",
-   "email" : "patieb@gmail.com",
+   "email" : "beatrice@gmail.com",
   "password" : "dennisojali",
   "phoneNumber": "+265888224603",
   "isOwner": false,

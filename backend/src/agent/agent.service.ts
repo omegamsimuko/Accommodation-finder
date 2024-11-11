@@ -81,6 +81,10 @@ export class AgentService {
 
   }
 
+  findAll(){}
+
+  findOne(id: number){}
+
   update(id: number, updateAgentDto: UpdateAgentDto) {
     return `This action updates a #${id} agent`;
   }
