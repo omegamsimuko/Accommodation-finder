@@ -8,8 +8,8 @@ function Login() {
             <span className="title">Register</span>
             
             <form>
-                <input type="text" placeholder="email"/>
-                <input type="email" placeholder="password"/>
+                <input type="email" placeholder="email"/>
+                <input type="password" placeholder="password"/>
                 
                 <button>Sign In</button>
             </form>
