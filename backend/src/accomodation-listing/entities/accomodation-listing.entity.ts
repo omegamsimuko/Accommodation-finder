@@ -8,7 +8,8 @@ import {
     CreateDateColumn,
   } from 'typeorm';
   import { Booking } from 'src/booking/entities/booking.entity';
-  import { User } from 'src/user/entities/user.entity';
+import { PropertyOwner } from 'src/property-owner/entities/property-owner.entity';
+
  
   
   @Entity()
@@ -52,13 +53,7 @@ import {
   thumbnail_image: string;
     
   
-    // Landlord/Estate Agent Information
-    @ManyToOne(() => User, (user) => user.accomodationListings)
-    user:User;
-    @JoinColumn({ name: 'propertyowner_id' })
-    propertyowner: User;
-   @OneToMany(() => Booking, booking => booking.accomodation)
-   bookings: Booking[];
+  
 
   }
   

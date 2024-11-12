@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column,OneToMany} from "typeorm";
+import { AccomodationListing } from "src/accomodation-listing/entities/accomodation-listing.entity";
 
 @Entity()
 export class PropertyOwner {
@@ -20,6 +21,4 @@ export class PropertyOwner {
     @Column({ default: 'propertyOwner' })
     role: string; // Default role for PropertyOwner
 
-    @OneToMany(() => AccommodationListing, (listing) => listing.propertyOwner)
-    listings: AccommodationListing[];
 }

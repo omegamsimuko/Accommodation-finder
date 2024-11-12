@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+import { AccomodationListing } from "src/accomodation-listing/entities/accomodation-listing.entity";
 
 
 @Entity()
@@ -21,7 +22,4 @@ export class Agent {
 
     @Column({ default: 'agent' })
     role: string; // Default role for agent
-
-    @OneToMany(() => AccomodationListing, (listing) => listing.propertyOwner)
-    listings: AccomodationListing[];
 }
