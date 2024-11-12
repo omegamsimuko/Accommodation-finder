@@ -1,8 +1,14 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.js
 module.exports = {
-  content: ["./src/**/*.{html,js}"],
+  content: [
+    './src/**/*.{html,js,jsx,ts,tsx}', // Add JSX files here for Tailwind to purge unused styles
+  ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'custom-blue': '#1E40AF', // Add a custom blue color
+      },
+    },
   },
   plugins: [],
-}
+};
