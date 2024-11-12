@@ -5,8 +5,8 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'dennis',
-    database: 'ifind',
+    password: '',
+    database: 'accomodationfinder',
     autoLoadEntities: true,     // Automatically loads all entities
-    synchronize: false,          // Use true only in development
+    synchronize: true,          // Use true only in development
   };

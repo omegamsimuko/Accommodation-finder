@@ -3,7 +3,9 @@ import { AgentService } from './agent.service';
 import { CreateAgentDto } from './dto/create-agent.dto';
 import { UpdateAgentDto } from './dto/update-agent.dto';
 import { SignUpDto } from 'src/auth/dto/SignUp.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Agent')
 @Controller('agent')
 export class AgentController {
   constructor(private readonly agentService: AgentService) {}

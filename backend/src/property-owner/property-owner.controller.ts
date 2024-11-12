@@ -3,7 +3,9 @@ import { PropertyOwnerService } from './property-owner.service';
 import { CreatePropertyOwnerDto } from './dto/create-property-owner.dto';
 import { UpdatePropertyOwnerDto } from './dto/update-property-owner.dto';
 import { SignUpDto } from 'src/auth/dto/SignUp.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Property-Owner')
 @Controller('property-owner')
 export class PropertyOwnerController {
   constructor(private readonly propertyOwnerService: PropertyOwnerService) {}

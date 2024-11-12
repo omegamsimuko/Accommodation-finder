@@ -17,11 +17,11 @@ export class Booking {
   @Column()
   accomodationId: string; // Foreign key to the Accommodation table
 
-  @Column('timestamp')
-  checkInDate: Date;  // Ensure this is of type 'Date'
+  @Column({ type: 'date', nullable: true })
+  checkInDate: Date | null; // Ensure this is of type 'Date'
 
-  @Column('timestamp')
-  checkOutDate: Date;  
+  @Column({ type: 'date', nullable: true })
+  checkOutDate: Date | null;
 
   @Column()
   status: string;
