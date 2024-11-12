@@ -22,14 +22,13 @@ export class StudentService {
 
   async create(createStudentDto: SignUpDto):Promise<{token:string}> {
     const name = (createStudentDto.firstName + " "+ createStudentDto.lastName);
-    const {email,password,phoneNumber} = createStudentDto;
+    const {email,password} = createStudentDto;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newStudent = await this.studentRepository.create({
       name: name,
       email: email,
-      password: hashedPassword,
-      phoneNumber: phoneNumber
+      password: hashedPassword
 
     })
 

@@ -21,14 +21,13 @@ export class AgentService {
 
  async create(createAgentDto: SignUpDto): Promise<{token: string}> {
     const name = (createAgentDto.firstName + " "+ createAgentDto.lastName);
-    const {email,password,phoneNumber} = createAgentDto;
+    const {email,password} = createAgentDto;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newAgent = await this.agentRepository.create({
       name: name,
       email: email,
       password: hashedPassword,
-      phoneNumber: phoneNumber
 
     })
 

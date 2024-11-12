@@ -4,8 +4,8 @@ content-type: application/json
 {
   "firstName": "Dennis",
   "lastName": "zukwayo",
-   "email" : "beatrice@gmail.com",
-  "password" : "dennisojali",
+   "email" : "beatricess@gmail.com",
+  "password" : "den",
   "isOwner": false,
   "isAgent": false
 }
