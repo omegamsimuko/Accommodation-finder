@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import logo from "./components/iFind logo.png"; // Logo import
+import axios from 'axios';  
+import logo from "./components/iFind logo.png"; 
 
 const AccommodationForm = () => {
     const [formData, setFormData] = useState({
@@ -14,6 +15,11 @@ const AccommodationForm = () => {
         additionalFee: '',
         image: null,
     });
+
+    const [progress, setProgress] = useState({ pc: 0 });
+    const [msg, setMsg] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
+    const [isFileInputDisabled, setIsFileInputDisabled] = useState(false);
 
     const handleChange = (e) => {
         const { name, value, type, files } = e.target;
@@ -30,13 +36,50 @@ const AccommodationForm = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formDataToSend = new FormData();
         Object.keys(formData).forEach(key => {
             formDataToSend.append(key, formData[key]);
         });
-        console.log(formDataToSend);
+
+        try {
+            // Send POST request with Axios, including progress tracking and custom headers
+            const response = await axios.post('http://localhost:3000/accomodation-listing', formDataToSend, {
+                onUploadProgress: (progressEvent) => {
+                    const percent = (progressEvent.loaded / progressEvent.total) * 100;
+                    setProgress({ pc: percent });  // Update progress state
+                },
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Custom-Header': 'value'  // Add custom headers here if needed
+                }
+            });
+
+            // Handle successful response
+            setMsg("Upload successful");
+            setImageUrl(URL.createObjectURL(formData.image));  // Set image URL preview
+            setIsFileInputDisabled(true);  // Optionally disable file input after upload
+            console.log(response.data);  // Log response data
+
+            // Reset form data after successful submission (optional)
+            setFormData({
+                title: '',
+                description: '',
+                locationType: '',
+                detailedLocation: '',
+                gender: '',
+                roomType: '',
+                spaceAvailable: '',
+                rentalFee: '',
+                additionalFee: '',
+                image: null,
+            });
+        } catch (error) {
+            // Handle error response
+            setMsg("Upload failed");
+            console.error("Error posting accommodation:", error);
+        }
     };
 
     return (
@@ -63,7 +106,7 @@ const AccommodationForm = () => {
                             />
                         </div>
 
-                        {/* Description */}
+                        
                         <div>
                             <label htmlFor="description" className="block text-lg font-medium text-dark-blue mb-2">Description</label>
                             <textarea
@@ -78,7 +121,7 @@ const AccommodationForm = () => {
                             />
                         </div>
 
-                        {/* Location Type */}
+                        
                         <div>
                             <label htmlFor="locationType" className="block text-lg font-medium text-dark-blue mb-2">Location Type</label>
                             <select
@@ -95,7 +138,7 @@ const AccommodationForm = () => {
                             </select>
                         </div>
 
-                        {/* Detailed Location */}
+                        
                         <div>
                             <label htmlFor="detailedLocation" className="block text-lg font-medium text-dark-blue mb-2">Detailed Location</label>
                             <input
@@ -110,7 +153,7 @@ const AccommodationForm = () => {
                             />
                         </div>
 
-                        {/* Gender */}
+                    
                         <div>
                             <label htmlFor="gender" className="block text-lg font-medium text-dark-blue mb-2">Gender</label>
                             <select
@@ -128,7 +171,7 @@ const AccommodationForm = () => {
                             </select>
                         </div>
 
-                        {/* Room Type */}
+                        
                         <div>
                             <label htmlFor="roomType" className="block text-lg font-medium text-dark-blue mb-2">Room Type</label>
                             <input
@@ -143,7 +186,7 @@ const AccommodationForm = () => {
                             />
                         </div>
 
-                        {/* Space Available */}
+                        
                         <div>
                             <label htmlFor="spaceAvailable" className="block text-lg font-medium text-dark-blue mb-2">Space Available</label>
                             <input
@@ -201,12 +244,21 @@ const AccommodationForm = () => {
                             />
                         </div>
 
+                        {/* Upload Progress */}
+                        <div className="mt-4">
+                            <p>Upload Progress: {progress.pc.toFixed(2)}%</p>
+                        </div>
+
                         {/* Submit Button */}
                         <div>
                             <button type="submit" className="w-full p-4 bg-indigo-900 text-white font-semibold rounded-md hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-600">
                                 Post Listing
                             </button>
                         </div>
+
+                        {/* Status Messages */}
+                        {msg && <div className="mt-4 text-center">{msg}</div>}
+                        {imageUrl && <div className="mt-4"><img src={imageUrl} alt="Uploaded Image Preview" className="w-32 h-32 mx-auto" /></div>}
                     </div>
                 </form>
             </div>
