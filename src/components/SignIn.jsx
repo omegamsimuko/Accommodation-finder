@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import logo from "./logo.png";
 import { Link } from "react-router-dom";
 import { MdMailOutline, MdKey } from "react-icons/md";
 
@@ -10,14 +11,35 @@ function SignInForm() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch("http://localhost3000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Login successful:", result);
+        
+      } else {
+        console.error("Login failed");
+        alert("Invalid credentials, please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred, please try again.");
+    }
   };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
-        <div className="text-center mb-6">
+      <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full text-center">
+        <div className="flex flex-col items-center mb-6">
+          <img src={logo}alt="logo" classname="w-20 mb-4"/>
           <h1 className="text-2xl font-bold">Sign in to iFind</h1>
           <p className="text-gray-600">
             find convenient housing options tailored for you
@@ -59,21 +81,21 @@ function SignInForm() {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200"
+            className="w-full bg-deepBlue text-white py-2 rounded-lg  transition duration-200"
           >
             Sign in
           </button>
           <div className="text-center mt-4">
             <p className="text-gray-600">
               forgot password?{" "}
-              <a href="#" className="text-blue-600 font-medium">
+              <a href="#" className="text-babyblue-500 font-medium">
                 Reset
               </a>
             </p>
           </div>
         </form>
         <div className="text-center mt-6">
-          <Link to="SignUp" className="text-blue-600 font-medium">
+          <Link to="SignUp" className="text-babyblue-500 font-medium">
             Sign Up
           </Link>
         </div>
@@ -81,4 +103,5 @@ function SignInForm() {
     </div>
   );
 }
+
 export default SignInForm;
