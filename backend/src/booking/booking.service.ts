@@ -18,7 +18,7 @@ export class BookingService {
 
   // Create a new booking
   async createBooking(createBookingDto: CreateBookingDto): Promise<BookingResponseDto> {
-    const { userId, accomodationId, checkInDate, checkOutDate } = createBookingDto;
+    const {  accomodationId, checkInDate, checkOutDate } = createBookingDto; //userId
 
     const checkIn = new Date(checkInDate);
     const checkOut = new Date(checkOutDate);
@@ -52,12 +52,12 @@ export class BookingService {
 
     // 4. Create the booking
     const booking = this.bookingRepository.create({
-      userId,
+      //userId,
       accomodationId,
       checkInDate: checkIn,
       checkOutDate: checkOut,
-      status: createBookingDto.status,
-      paymentStatus: createBookingDto.paymentStatus,
+      //status: createBookingDto.status,
+     // paymentStatus: createBookingDto.paymentStatus,
       totalPrice: createBookingDto.totalPrice,
     });
 
@@ -99,8 +99,8 @@ export class BookingService {
     }
 
     // Update booking details here
-    booking.status = updateBookingDto.status;
-    booking.paymentStatus = updateBookingDto.paymentStatus;
+    //booking.status = updateBookingDto.status;
+   // booking.paymentStatus = updateBookingDto.paymentStatus;
     booking.totalPrice = updateBookingDto.totalPrice;
     booking.checkInDate = new Date(updateBookingDto.checkInDate);
     booking.checkOutDate = new Date(updateBookingDto.checkOutDate);
@@ -157,12 +157,12 @@ export class BookingService {
     }
 
     return {
-      userId: booking.userId,
+      //userId: booking.userId,
       accomodationId: booking.accomodationId,
       checkInDate: checkInDate.toISOString(),
       checkOutDate: checkOutDate.toISOString(),
-      status: booking.status,
-      paymentStatus: booking.paymentStatus,
+      //status: booking.status,
+      //paymentStatus: booking.paymentStatus,
       totalPrice: booking.totalPrice,
     };
   }

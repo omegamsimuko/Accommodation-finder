@@ -4,11 +4,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsUUID, IsString, IsDateString, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateBookingDto {
-  @ApiProperty({
-    description: 'User ID of the person making the booking',
-  })
-  @IsUUID()
-  userId: string;  // Required: Identifies the user making the booking.
+  //@ApiProperty({
+    //description: 'User ID of the person making the booking',
+ // })
+  //@IsUUID()
+  //userId: string;  // Required: Identifies the user making the booking.
 
   @ApiProperty({
     description: 'Accommodation ID being booked',
@@ -28,13 +28,13 @@ export class CreateBookingDto {
   @IsDateString()  // Ensure the date is in a valid ISO 8601 format
   checkOutDate: string;  // Required: End date of the booking.
 
-  @ApiProperty()
-  @IsString()
-  status: string;  // Status of the booking, e.g., "confirmed", "pending".
+ // @ApiProperty()
+  //@IsString()
+  //status: string;  // Status of the booking, e.g., "confirmed", "pending".
 
-  @ApiProperty()
-  @IsString()
-  paymentStatus: string;  // Status of the payment, e.g., "paid", "pending".
+  //@ApiProperty()
+  //@IsString()
+ // paymentStatus: string;  // Status of the payment, e.g., "paid", "pending".
 
   @ApiProperty({
     description: 'Total price for the booking',

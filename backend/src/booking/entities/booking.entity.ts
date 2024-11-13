@@ -11,8 +11,8 @@ export class Booking {
   //@JoinColumn({ name: 'accomodationId' })
   //accomodation: AccomodationListing;
 
-  @Column()
-  userId: string;  // Foreign key to the User table
+  //@Column()
+  //userId: string;  // Foreign key to the User table
 
   @Column()
   accomodationId: string; // Foreign key to the Accommodation table
@@ -23,11 +23,11 @@ export class Booking {
   @Column({ type: 'date', nullable: true })
   checkOutDate: Date | null;
 
-  @Column()
-  status: string;
+  //@Column()
+  //status: string;
 
-  @Column()
-  paymentStatus: string;
+ // @Column()
+ // paymentStatus: string;
 
   @Column({ type: 'decimal', nullable: true })
   totalPrice?: number;
