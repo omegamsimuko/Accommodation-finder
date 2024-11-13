@@ -9,60 +9,48 @@ const AccommodationForm = () => {
         locationType: '',
         detailedLocation: '',
         gender: '',
-        roomType: '',
+        roomType: '',  // Comma-separated list for room types
         spaceAvailable: '',
         rentalFee: '',
         additionalFee: '',
-        image: null,
+        image: '',  // Comma-separated list for image URLs
     });
 
-    const [progress, setProgress] = useState({ pc: 0 });
     const [msg, setMsg] = useState('');
-    const [imageUrl, setImageUrl] = useState('');
-    const [isFileInputDisabled, setIsFileInputDisabled] = useState(false);
 
     const handleChange = (e) => {
-        const { name, value, type, files } = e.target;
-        if (type === 'file') {
-            setFormData(prevState => ({
-                ...prevState,
-                [name]: files[0]
-            }));
-        } else {
-            setFormData(prevState => ({
-                ...prevState,
-                [name]: value
-            }));
-        }
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formDataToSend = new FormData();
-        Object.keys(formData).forEach(key => {
-            formDataToSend.append(key, formData[key]);
-        });
+
+        // Convert roomType and image into arrays
+        const roomTypeArray = formData.roomType.split(',').map(item => item.trim());  // Split and clean
+        const imageArray = formData.image.split(',').map(item => item.trim());  // Split and clean
+
+        // Prepare data to send
+        const dataToSend = {
+            ...formData,
+            roomType: roomTypeArray,
+            image: imageArray,
+        };
 
         try {
-            // Send POST request with Axios, including progress tracking and custom headers
-            const response = await axios.post('http://localhost:3000/accomodation-listing', formDataToSend, {
-                onUploadProgress: (progressEvent) => {
-                    const percent = (progressEvent.loaded / progressEvent.total) * 100;
-                    setProgress({ pc: percent });  // Update progress state
-                },
+            const response = await axios.post('http://localhost:3000/accomodation-listing', dataToSend, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Custom-Header': 'value'  // Add custom headers here if needed
-                }
+                    'Content-Type': 'application/json',
+                },
             });
 
             // Handle successful response
             setMsg("Upload successful");
-            setImageUrl(URL.createObjectURL(formData.image));  // Set image URL preview
-            setIsFileInputDisabled(true);  // Optionally disable file input after upload
-            console.log(response.data);  // Log response data
-
-            // Reset form data after successful submission (optional)
+            
+            // Reset form data after successful submission
             setFormData({
                 title: '',
                 description: '',
@@ -73,7 +61,7 @@ const AccommodationForm = () => {
                 spaceAvailable: '',
                 rentalFee: '',
                 additionalFee: '',
-                image: null,
+                image: '',  // Reset image URL field
             });
         } catch (error) {
             // Handle error response
@@ -89,7 +77,7 @@ const AccommodationForm = () => {
                     <img src={logo} alt="Logo" className="mx-auto mb-4" />
                     <h1 className="text-3xl font-semibold text-dark-blue">Post Accommodation Listing</h1>
                 </div>
-                <form onSubmit={handleSubmit} encType="multipart/form-data">
+                <form onSubmit={handleSubmit}>
                     <div className="space-y-6">
                         {/* Title */}
                         <div>
@@ -106,7 +94,7 @@ const AccommodationForm = () => {
                             />
                         </div>
 
-                        
+                        {/* Description */}
                         <div>
                             <label htmlFor="description" className="block text-lg font-medium text-dark-blue mb-2">Description</label>
                             <textarea
@@ -121,7 +109,7 @@ const AccommodationForm = () => {
                             />
                         </div>
 
-                        
+                        {/* Location Type */}
                         <div>
                             <label htmlFor="locationType" className="block text-lg font-medium text-dark-blue mb-2">Location Type</label>
                             <select
@@ -138,7 +126,7 @@ const AccommodationForm = () => {
                             </select>
                         </div>
 
-                        
+                        {/* Detailed Location */}
                         <div>
                             <label htmlFor="detailedLocation" className="block text-lg font-medium text-dark-blue mb-2">Detailed Location</label>
                             <input
@@ -153,7 +141,7 @@ const AccommodationForm = () => {
                             />
                         </div>
 
-                    
+                        {/* Gender */}
                         <div>
                             <label htmlFor="gender" className="block text-lg font-medium text-dark-blue mb-2">Gender</label>
                             <select
@@ -171,7 +159,7 @@ const AccommodationForm = () => {
                             </select>
                         </div>
 
-                        
+                        {/* Room Types */}
                         <div>
                             <label htmlFor="roomType" className="block text-lg font-medium text-dark-blue mb-2">Room Type</label>
                             <input
@@ -181,12 +169,12 @@ const AccommodationForm = () => {
                                 value={formData.roomType}
                                 onChange={handleChange}
                                 required
-                                placeholder="Enter room type"
+                                placeholder="Enter room types (comma-separated)"
                                 className="w-full p-4 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-600 transition-all"
                             />
                         </div>
 
-                        
+                        {/* Space Available */}
                         <div>
                             <label htmlFor="spaceAvailable" className="block text-lg font-medium text-dark-blue mb-2">Space Available</label>
                             <input
@@ -216,7 +204,7 @@ const AccommodationForm = () => {
                             />
                         </div>
 
-                        {/* Additional Fee */}
+                        {/* Additional Fees */}
                         <div>
                             <label htmlFor="additionalFee" className="block text-lg font-medium text-dark-blue mb-2">Additional Fee</label>
                             <input
@@ -231,36 +219,31 @@ const AccommodationForm = () => {
                             />
                         </div>
 
-                        {/* Image Upload */}
+                        {/* Image URLs */}
                         <div>
-                            <label htmlFor="image" className="block text-lg font-medium text-dark-blue mb-2">Upload Image</label>
+                            <label htmlFor="image" className="block text-lg font-medium text-dark-blue mb-2">Image URLs</label>
                             <input
-                                type="file"
+                                type="text"
                                 id="image"
                                 name="image"
-                                accept="image/*"
+                                value={formData.image}
                                 onChange={handleChange}
-                                className="w-full text-sm text-gray-700 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-600 transition-all"
+                                required
+                                placeholder="Enter image URLs (comma-separated)"
+                                className="w-full p-4 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-600 transition-all"
                             />
-                        </div>
-
-                        {/* Upload Progress */}
-                        <div className="mt-4">
-                            <p>Upload Progress: {progress.pc.toFixed(2)}%</p>
                         </div>
 
                         {/* Submit Button */}
                         <div>
-                            <button type="submit" className="w-full p-4 bg-indigo-900 text-white font-semibold rounded-md hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-600">
+                            <button type="submit" className="w-full p-4 bg-blue-900 text-white font-semibold rounded-md hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-600">
                                 Post Listing
                             </button>
                         </div>
-
-                        {/* Status Messages */}
-                        {msg && <div className="mt-4 text-center">{msg}</div>}
-                        {imageUrl && <div className="mt-4"><img src={imageUrl} alt="Uploaded Image Preview" className="w-32 h-32 mx-auto" /></div>}
                     </div>
                 </form>
+
+                {msg && <p className="text-center mt-4 text-green-600">{msg}</p>}
             </div>
         </div>
     );
