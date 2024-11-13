@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';  // Import ApiProperty decorator
-import { IsNotEmpty, IsEmail, IsString, MinLength, IsPhoneNumber, IsBoolean } from 'class-validator';
+import { IsNotEmpty, IsEmail, IsString, MinLength, IsBoolean } from 'class-validator';
 
 export class SignUpDto {
 
@@ -38,14 +38,6 @@ export class SignUpDto {
   @IsString()
   @MinLength(6, { message: 'Password must be at least 6 characters long' })
   password: string;
-
-  @ApiProperty({
-    description: 'User\'s phone number',
-    type: String,
-   // Example for MW (Malawi)
-  })
-  @IsPhoneNumber('MW')
-  phoneNumber: string;
 
   @ApiProperty({
     description: 'Indicates if the user is a property owner',

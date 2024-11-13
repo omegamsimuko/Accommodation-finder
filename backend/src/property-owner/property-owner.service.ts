@@ -21,14 +21,13 @@ export class PropertyOwnerService {
 
   async create(createPropertyOwnerDto: SignUpDto):Promise<{token : string}> {
     const name = (createPropertyOwnerDto.firstName + " " +createPropertyOwnerDto.lastName);
-    const {email,password,phoneNumber} = createPropertyOwnerDto;
+    const {email,password} = createPropertyOwnerDto;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newOwner = await this.propertyOwnerRepository.create({
       name: name,
       email: email,
       password: hashedPassword,
-      phoneNumber: phoneNumber
 
     })
 

@@ -15,9 +15,6 @@ export class PropertyOwner {
     @Column()
     password: string;
 
-    @Column()
-    phoneNumber : string;
-
     @Column({ default: 'propertyOwner' })
     role: string; // Default role for PropertyOwner
 

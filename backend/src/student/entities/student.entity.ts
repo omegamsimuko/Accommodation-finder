@@ -16,9 +16,6 @@ export class Student {
     @Column()
     password: string;
 
-    @Column()
-    phoneNumber : string;
-
     @Column({ default: 'student' })
     role: string; // Default role for Student
 

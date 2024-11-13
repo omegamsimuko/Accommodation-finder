@@ -17,9 +17,6 @@ export class Agent {
     @Column()
     password: string;
 
-    @Column()
-    phoneNumber : string;
-
     @Column({ default: 'agent' })
     role: string; // Default role for agent
 }

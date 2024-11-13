@@ -18,8 +18,7 @@ export class CreateAccomodationListingDto {
 
   })
   @IsNotEmpty()
-  @IsString()
-  @MinLength(1)
+  @IsString()  @MinLength(1)
   description: string;
 
   @ApiProperty({
