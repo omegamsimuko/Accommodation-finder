@@ -14,6 +14,10 @@ export class AccomodationListingController {
   async findOne(@Param('id') id: string) {
     return this.accomodationListingService.findById(id);
   }
+  //@Get()
+  //async getAllAccommodations() {
+   // return this.accomodationListingService.getAllAccomodations();
+ // }
 
   @Get()
   async findAll(@Query() searchfilteringDto: Searchfiltering) {

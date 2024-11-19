@@ -95,11 +95,6 @@ export class CreateAccomodationListingDto {
   @IsOptional()
   image: string[];
 
-  @ApiProperty({
-    description: 'Thumbnail image URL',
   
-  })
-  @IsNotEmpty()
-  @IsString()
-  thumbnail_image: string;
+
 }

@@ -5,6 +5,7 @@ import { AccomodationListing } from 'src/accomodation-listing/entities/accomodat
 import { CreateAccomodationListingDto } from './dto/create-accomodation-listing.dto';
 import { UpdateAccomodationListingDto } from './dto/update-accomodation-listing.dto';
 import { Searchfiltering } from 'src/searchfiltering/entities/searchfiltering.entity';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 @Injectable()
 export class AccomodationListingService {
@@ -13,40 +14,29 @@ export class AccomodationListingService {
     private readonly accommodationRepository: Repository<AccomodationListing>,
   ) {}
 
+  // Find by ID
   async findById(id: string): Promise<AccomodationListing | null> {
-    return this.accommodationRepository.findOne({ where: { id } });
+    const accommodation = await this.accommodationRepository.findOne({ where: { id } });
+    if (!accommodation) {
+      throw new HttpException('Accommodation not found', HttpStatus.NOT_FOUND);
+    }
+    return accommodation;
   }
 
+  // Find all with dynamic search filters
   async findAll(searchDto: Searchfiltering): Promise<AccomodationListing[]> {
     const queryBuilder = this.accommodationRepository.createQueryBuilder('accommodation');
 
-    // Dynamically add filtering conditions based on the searchDto
-    if (searchDto.locationType) {
-      queryBuilder.andWhere('accommodation.locationType = :locationType', {
-        locationType: searchDto.locationType,
-      });
-    }
+    // Dynamically add filters based on the provided searchDto
+    Object.keys(searchDto).forEach((key) => {
+      if (searchDto[key] !== undefined && searchDto[key] !== null) {
+        queryBuilder.andWhere(`accommodation.${key} = :${key}`, {
+          [key]: searchDto[key],
+        });
+      }
+    });
 
-    // Correct the reference to 'searchDto'
-    if (searchDto.spaceAvailable) {
-      queryBuilder.andWhere('accommodation.spaceAvailable >= :spaceAvailable', {
-        spaceAvailable: searchDto.spaceAvailable,
-      });
-    }
-
-    if (searchDto.rentalfee) {
-      queryBuilder.andWhere('accommodation.rentalFee <= :rentalFee', {
-        rentalFee: searchDto.rentalfee,
-      });
-    }
-
-    if (searchDto.roomType) {
-      queryBuilder.andWhere('accommodation.roomType= :roomType', {
-        roomType: searchDto.roomType,
-      });
-    }
-
-    // Example of using ranges (if rental fee has a range filter)
+    // Example of using range filters for rental fee (if rentalfee_Min and rentalfee_Max are provided)
     if (searchDto.rentalfee_Min) {
       queryBuilder.andWhere('accommodation.rentalFee >= :rentalfee_Min', {
         rentalfee_Min: searchDto.rentalfee_Min,
@@ -59,24 +49,45 @@ export class AccomodationListingService {
       });
     }
 
-    // Return filtered accommodations based on the search criteria
     return queryBuilder.getMany();
   }
 
-  async findByUserId(accomodation_id: string): Promise<AccomodationListing | null> {
-    return this.accommodationRepository.findOneBy({ id: accomodation_id }); // Use the correct property name
+  // Find by Accommodation ID (assuming this should not be by user)
+  async findByAccomodationId(accomodation_id: string): Promise<AccomodationListing | null> {
+    const accommodation = await this.accommodationRepository.findOne({ where: { id: accomodation_id } });
+    if (!accommodation) {
+      throw new HttpException('Accommodation not found', HttpStatus.NOT_FOUND);
+    }
+    return accommodation;
   }
 
+  // Create a new Accommodation Listing
   async create(createAccomodationListingDto: CreateAccomodationListingDto): Promise<AccomodationListing> {
-    return this.accommodationRepository.save(createAccomodationListingDto);
+    const newAccommodation = this.accommodationRepository.create(createAccomodationListingDto);
+    return this.accommodationRepository.save(newAccommodation);
   }
 
-  async update(id: string, updateAccomodationListingDto: UpdateAccomodationListingDto): Promise<void> {
-    await this.accommodationRepository.update(id, updateAccomodationListingDto);
+  // Update an existing Accommodation Listing by ID
+  async update(id: string, updateAccomodationListingDto: UpdateAccomodationListingDto): Promise<AccomodationListing> {
+    const accommodation = await this.accommodationRepository.preload({
+      id,
+      ...updateAccomodationListingDto,
+    });
+
+    if (!accommodation) {
+      throw new HttpException('Accommodation not found', HttpStatus.NOT_FOUND);
+    }
+
+    return this.accommodationRepository.save(accommodation);
   }
 
+  // Remove an Accommodation Listing by ID
   async remove(id: string): Promise<void> {
-    await this.accommodationRepository.delete(id);
+    const accommodation = await this.accommodationRepository.findOne({ where: { id } });
+    if (!accommodation) {
+      throw new HttpException('Accommodation not found', HttpStatus.NOT_FOUND);
+    }
+
+    await this.accommodationRepository.remove(accommodation);
   }
 }
-

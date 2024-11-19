@@ -1,63 +1,43 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-    OneToMany,
-    JoinColumn,
-    CreateDateColumn,
-  } from 'typeorm';
-  import { Booking } from 'src/booking/entities/booking.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm';
+import { Booking } from 'src/booking/entities/booking.entity';
 import { PropertyOwner } from 'src/property-owner/entities/property-owner.entity';
 
- 
-  
-  @Entity()
-  export class AccomodationListing {
-    @PrimaryGeneratedColumn()
-    id: string;
-  
+@Entity()
+export class AccomodationListing {
+  @PrimaryGeneratedColumn()
+  id: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  title: string; // Title of the accommodation
+  @Column()
+  title: string;
 
-  @Column({ type: 'text' })
-  description: string; // Detailed description of the accommodation
+  @Column()
+  description: string;
 
-  @Column({ type: 'enum', enum: ['urban', 'rural'] })
-  locationType: 'urban' | 'rural'; // Location type (urban/rural)
+  @Column()
+  locationType: 'urban' | 'rural';
 
-  @Column({ type: 'varchar', length: 255 })
-  detailedLocation: string; // Detailed location (street, neighborhood, etc.)
+  @Column()
+  detailedLocation: string;
 
-  @Column({ type: 'enum', enum: ['male', 'female', 'unisex'] })
-  gender: 'male' | 'female' | 'unisex'; // Gender-specific or unisex accommodation
+  @Column()
+  gender: 'male' | 'female' | 'unisex';
 
-  @Column('simple-array')
-  roomType: string[]; // Array of room types (single, double, etc.)
+  @Column()
+  spaceAvailable: number;
 
-  @Column({ type: 'int' })
-  spaceAvailable: number; // Total number of available rooms or bed spaces
+  @Column()
+  rentalFee: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  rentalFee: number; // Monthly rental fee
+  @Column('simple-array', { nullable: true })
+  additionalFees: string[];
 
-  @Column('simple-array')
-  additionalFees: string[]; // Additional fees (electricity, water, maintenance, etc.)
+  @Column('simple-array', { nullable: true })
+  image: string[];
 
-  @Column('simple-array')
-  image: string[]; // Array of image URLs for the accommodation
+  // Define the one-to-many relationship with bookings
+  @OneToMany(() => Booking, (booking) => booking.accommodation)
+  bookings: Booking[];
 
-  
-  @Column({ nullable: true })
-  thumbnail_image: string;
-    
-  
-  
-
-  }
-  
-  
-  
-  
-  
+  @ManyToOne(() => PropertyOwner, (propertyOwner) => propertyOwner.bookings)
+  propertyOwner: PropertyOwner;
+}
