@@ -18,4 +18,7 @@ export class PropertyOwner {
     @Column({ default: 'propertyOwner' })
     role: string; // Default role for PropertyOwner
 
+    @OneToMany(() => AccomodationListing, (listing) => listing.owner)
+    listings: AccomodationListing[];
+
 }
