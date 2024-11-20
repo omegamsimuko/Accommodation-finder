@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 const Profile = () => {
-  const [name, setName] = useState("John Doe");
-  const [email, setEmail] = useState("john.doe@example.com");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [profilePicture, setProfilePicture] = useState(
     "https://via.placeholder.com/150"
   );
@@ -38,7 +38,7 @@ const Profile = () => {
           />
           <label
             htmlFor="profile-picture"
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-600"
+            className="mt-4 bg-blue-900 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-600"
           >
             Upload Picture
           </label>
@@ -64,7 +64,7 @@ const Profile = () => {
           )}
           <button
             onClick={() => setIsEditingName(true)}
-            className="ml-2 text-blue-500 hover:text-blue-700"
+            className="ml-2 text-blue-900 hover:text-blue-700"
           >
             Edit
           </button>
@@ -83,14 +83,14 @@ const Profile = () => {
           )}
           <button
             onClick={() => setIsEditingEmail(true)}
-            className="ml-2 text-blue-500 hover:text-blue-700"
+            className="ml-2 text-blue-900 hover:text-blue-700"
           >
             Edit
           </button>
         </div>
         <button
           onClick={handleSaveChanges}
-          className="mt-6 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="mt-6 w-full bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
           Save Changes
         </button>
