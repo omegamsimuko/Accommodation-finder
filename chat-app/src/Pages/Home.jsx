@@ -4,6 +4,7 @@ import Chat from '../components/Chat';
 import Search from '../components/Search';
 import Navbar from '../components/Navbar';
 import HostelUp from '../components/Hostel';
+import Profile from '../components/Profile';
 
 const Home = () => {
   return (
@@ -13,7 +14,7 @@ const Home = () => {
             <Chat/>
             <Search/>
             <Navbar/>
-            
+            <Profile/>
         </div>
     </div>
   )
