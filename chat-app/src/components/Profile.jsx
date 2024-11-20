@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 
 const Profile = () => {
-  const [name, setName] = useState("");
-  const [about, setAbout] = useState(
-    ""
-  );
-  const [email, setEmail] = useState(" ");
-  const [phone, setPhone] = useState("");
-  const [location, setLocation] = useState(" ");
+  const [name, setName] = useState("John Doe");
+  const [email, setEmail] = useState("john.doe@example.com");
   const [profilePicture, setProfilePicture] = useState(
     "https://via.placeholder.com/150"
   );
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
 
   const handlePictureUpload = (e) => {
     const file = e.target.files[0];
@@ -21,6 +18,13 @@ const Profile = () => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleSaveChanges = () => {
+    // Perform save logic here (e.g., API call to update user profile)
+    setIsEditingName(false);
+    setIsEditingEmail(false);
+    alert("Changes saved successfully!");
   };
 
   return (
@@ -46,52 +50,48 @@ const Profile = () => {
             onChange={handlePictureUpload}
           />
         </div>
-        <div className="mt-6">
-          <label className="block text-gray-800 font-semibold">Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="mt-1 w-full px-3 py-2 border rounded-md"
-          />
+        <div className="mt-6 flex items-center">
+          <label className="block text-gray-800 font-semibold mr-2">Name:</label>
+          {isEditingName ? (
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="px-3 py-2 border rounded-md flex-1"
+            />
+          ) : (
+            <span className="flex-1">{name}</span>
+          )}
+          <button
+            onClick={() => setIsEditingName(true)}
+            className="ml-2 text-blue-500 hover:text-blue-700"
+          >
+            Edit
+          </button>
         </div>
-        <div className="mt-6">
-          <label className="block text-gray-800 font-semibold">About Me</label>
-          <textarea
-            value={about}
-            onChange={(e) => setAbout(e.target.value)}
-            rows="4"
-            className="mt-1 w-full px-3 py-2 border rounded-md"
-          ></textarea>
+        <div className="mt-6 flex items-center">
+          <label className="block text-gray-800 font-semibold mr-2">Email:</label>
+          {isEditingEmail ? (
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="px-3 py-2 border rounded-md flex-1"
+            />
+          ) : (
+            <span className="flex-1">{email}</span>
+          )}
+          <button
+            onClick={() => setIsEditingEmail(true)}
+            className="ml-2 text-blue-500 hover:text-blue-700"
+          >
+            Edit
+          </button>
         </div>
-        <div className="mt-6">
-          <label className="block text-gray-800 font-semibold">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full px-3 py-2 border rounded-md"
-          />
-        </div>
-        <div className="mt-6">
-          <label className="block text-gray-800 font-semibold">Phone</label>
-          <input
-            type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="mt-1 w-full px-3 py-2 border rounded-md"
-          />
-        </div>
-        <div className="mt-6">
-          <label className="block text-gray-800 font-semibold">Location</label>
-          <input
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className="mt-1 w-full px-3 py-2 border rounded-md"
-          />
-        </div>
-        <button className="mt-6 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        <button
+          onClick={handleSaveChanges}
+          className="mt-6 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
           Save Changes
         </button>
       </div>
@@ -100,3 +100,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
