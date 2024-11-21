@@ -1,10 +1,21 @@
-// booking-response.dto.ts
+// src/booking/dto/booking-response.dto.ts
+
+import { Booking } from '../entities/booking.entity';  // Ensure correct import path
+
 export class BookingResponseDto {
-  //userId: string;
+  bookingId: number;
   accomodationId: string;
   checkInDate: string;
   checkOutDate: string;
-  //status: string;
-  //paymentStatus: string;
   totalPrice: number;
+  status: string;
+
+  constructor(booking: Booking) {
+    this.bookingId = booking.id;
+    this.accomodationId = booking.accomodationId;
+    this.checkInDate = booking.checkInDate;
+    this.checkOutDate = booking.checkOutDate;
+    this.totalPrice = booking.totalPrice;
+    this.status = booking.status;
+  }
 }

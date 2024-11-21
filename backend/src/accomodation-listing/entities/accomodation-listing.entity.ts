@@ -34,6 +34,10 @@ export class AccomodationListing {
   @Column('simple-array', { nullable: true })
   image: string[];
 
+  @Column()
+  bookingFee: number;
+  
+
   // Define the one-to-many relationship with bookings
   @OneToMany(() => Booking, (booking) => booking.accommodation)
   bookings: Booking[];

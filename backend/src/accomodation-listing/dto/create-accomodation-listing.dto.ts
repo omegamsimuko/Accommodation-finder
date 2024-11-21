@@ -95,6 +95,11 @@ export class CreateAccomodationListingDto {
   @IsOptional()
   image: string[];
 
+  @IsNotEmpty()
+  @IsNumber()
+  @IsPositive()
+  bookingFee: number;
+
   
 
 }

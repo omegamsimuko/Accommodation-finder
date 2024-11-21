@@ -1,35 +1,40 @@
+// booking.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { PropertyOwner } from 'src/property-owner/entities/property-owner.entity'; // Ensure correct import path
 import { AccomodationListing } from 'src/accomodation-listing/entities/accomodation-listing.entity';
+import { Student } from 'src/student/entities/student.entity';  // Assuming you have a Student entity
 
-@Entity()
+@Entity('bookings')
 export class Booking {
   @PrimaryGeneratedColumn()
-  
-  id: string; 
-  
-  //@ManyToOne(() => AccomodationListing, (accomodation) => accomodation.bookings, { eager: true })
-  //@JoinColumn({ name: 'accomodationId' })
-  //accomodation: AccomodationListing;
-
-  //@Column()
-  //userId: string;  // Foreign key to the User table
+  id: number;
 
   @Column()
-  accomodationId: string; // Foreign key to the Accommodation table
+  accomodationId: string;  // Reference to the accommodation
 
-  @Column({ type: 'date', nullable: true })
-  checkInDate: Date | null; // Ensure this is of type 'Date'
+  @ManyToOne(() => AccomodationListing, (accommodationListing) => accommodationListing.bookings)
+  @JoinColumn({ name: 'accommodationId' })
+  accommodation: AccomodationListing;  // Link to the Accommodation entity
 
-  @Column({ type: 'date', nullable: true })
-  checkOutDate: Date | null;
+  @Column('date')
+  checkInDate: string;
 
-  //@Column()
-  //status: string;
+  @Column('date')
+  checkOutDate: string;
 
- // @Column()
- // paymentStatus: string;
+  @Column('decimal')
+  totalPrice: number;
 
-  @Column({ type: 'decimal', nullable: true })
-  totalPrice?: number;
+  @Column({ default: 'pending' })
+  status: string;
+
+  // Many-to-one relation with Student (a booking belongs to one student)
+  @ManyToOne(() => Student, (student) => student.bookings)
+  @JoinColumn({ name: 'studentId' })
+  student: Student;
+
+  // Many-to-one relation with PropertyOwner (a booking belongs to one property owner)
+  @ManyToOne(() => PropertyOwner, (owner) => owner.bookings)
+  @JoinColumn({ name: 'ownerId' })
+  owner: PropertyOwner;
 }
-

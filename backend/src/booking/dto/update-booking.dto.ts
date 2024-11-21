@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsUUID, IsNumber, IsDateString } from 'class-validator';
+import { IsString, IsUUID, IsNumber, IsDateString, IsIn } from 'class-validator';
+
+
 
 export class UpdateBookingDto {
   //@ApiProperty({ description: 'User ID of the person making the booking' })
@@ -17,6 +19,10 @@ export class UpdateBookingDto {
   @ApiProperty({ description: 'Check-out date for the booking' })
   @IsDateString()
   checkOutDate: string;
+
+  @IsIn(['pending', 'confirmed', 'rejected'])
+  status: string;
+
 
   //@ApiProperty()
   //@IsString()
