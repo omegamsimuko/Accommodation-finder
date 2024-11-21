@@ -12,8 +12,10 @@ const AccommodationForm = () => {
         roomType: '',  // Comma-separated list for room types
         spaceAvailable: '',
         rentalFee: '',
+        bookingFee:'',
         additionalFee: '',
         image: '',  // Comma-separated list for image URLs
+        
     });
 
     const [msg, setMsg] = useState('');
@@ -60,6 +62,7 @@ const AccommodationForm = () => {
                 roomType: '',
                 spaceAvailable: '',
                 rentalFee: '',
+                bookingFee:'',
                 additionalFee: '',
                 image: '',  // Reset image URL field
             });
@@ -162,16 +165,19 @@ const AccommodationForm = () => {
                         {/* Room Types */}
                         <div>
                             <label htmlFor="roomType" className="block text-lg font-medium text-dark-blue mb-2">Room Type</label>
-                            <input
-                                type="text"
+                            <select
                                 id="roomType"
                                 name="roomType"
                                 value={formData.roomType}
                                 onChange={handleChange}
                                 required
-                                placeholder="Enter room types (comma-separated)"
                                 className="w-full p-4 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-600 transition-all"
-                            />
+                            >
+                                <option value="">Select RoomType</option>
+                                <option value="male">Single</option>
+                                <option value="female">Double</option>
+                                <option value="unisex">Dorm-Style</option>
+                            </select>
                         </div>
 
                         {/* Space Available */}
@@ -200,6 +206,20 @@ const AccommodationForm = () => {
                                 onChange={handleChange}
                                 required
                                 placeholder="Rental fee"
+                                className="w-full p-4 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-600 transition-all"
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="rentalFee" className="block text-lg font-medium text-dark-blue mb-2">Booking Fee (MK)</label>
+                            <input
+                                type="number"
+                                id="bookingFee"
+                                name="bookingFee"
+                                value={formData.bookingFee}
+                                onChange={handleChange}
+                                required
+                                placeholder="Booking fee"
                                 className="w-full p-4 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-600 transition-all"
                             />
                         </div>

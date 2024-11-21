@@ -108,7 +108,7 @@ const BookingForm = () => {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full p-3 mt-4 text-white font-semibold rounded-md ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'}`}
+          className={`w-full p-3 mt-4 text-white font-semibold rounded-md ${loading ? 'bg-gray-400' : 'bg-blue-900 hover:bg-blue-700'}`}
         >
           {loading ? 'Booking Now...' : 'Book Now'}
         </button>

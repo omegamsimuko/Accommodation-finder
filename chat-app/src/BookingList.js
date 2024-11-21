@@ -63,7 +63,7 @@ const BookingList = () => {
 
               {userRole === 'owner' && booking.status === 'pending' && (
                 <div className="mt-4">
-                  <button onClick={() => handleConfirmBooking(booking.id)} className="bg-green-500 text-white px-4 py-2 rounded-md mr-2">Confirm</button>
+                  <button onClick={() => handleConfirmBooking(booking.id)} className="bg-blue-900 text-white px-4 py-2 rounded-md mr-2">Confirm</button>
                   <button onClick={() => handleRejectBooking(booking.id)} className="bg-red-500 text-white px-4 py-2 rounded-md">Reject</button>
                 </div>
               )}
