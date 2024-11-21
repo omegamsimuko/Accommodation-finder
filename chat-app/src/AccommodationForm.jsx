@@ -41,7 +41,7 @@ const AccommodationForm = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:3000/accomodation-listing', dataToSend, {
+            const response = await axios.post('http://localhost:3001/accomodation-listing', dataToSend, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
