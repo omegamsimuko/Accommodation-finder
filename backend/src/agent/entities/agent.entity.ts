@@ -19,4 +19,8 @@ export class Agent {
 
     @Column({ default: 'agent' })
     role: string; // Default role for agent
+
+    @OneToMany(() => AccomodationListing, (listing) => listing.agent)
+    listings: AccomodationListing[];
+
 }
