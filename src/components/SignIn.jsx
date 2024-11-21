@@ -1,35 +1,44 @@
-import React from "react";
+import React,{useState} from "react";
 import { useForm } from "react-hook-form";
 import logo from "./logo.png";
 import { Link } from "react-router-dom";
+import api from "../api/axios";
 import { MdMailOutline, MdKey } from "react-icons/md";
 
 function SignInForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+// function SignInForm() {
+//   const {
+//     register,
+//     handleSubmit,
+//     formState: { errors },
+//   } = useForm();
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch("http://localhost3000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await api.post("http://localhost:3000/auth/login", { email, password });
+      console.log("Signup successful:", response.data);
+  }
+    // try {
+    //   const response = await fetch("http://localhost3000/auth/login", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(data),
+    //   });
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Login successful:", result);
+    //   if (response.ok) {
+    //     const result = await response.json();
+    //     console.log("Login successful:", result);
         
-      } else {
-        console.error("Login failed");
-        alert("Invalid credentials, please try again.");
-      }
-    } catch (error) {
+    //   } else {
+    //     console.error("Login failed");
+    //     alert("Invalid credentials, please try again.");
+    //   }
+    catch (error) {
       console.error("Error:", error);
       alert("An error occurred, please try again.");
     }
