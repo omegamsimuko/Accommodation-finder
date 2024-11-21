@@ -85,6 +85,11 @@ export class CreateAccomodationListingDto {
   @IsOptional()
   additionalFees: string[];
 
+  @IsNotEmpty()
+  @IsNumber()
+  @IsPositive()
+  bookingFee: number;
+
   @ApiProperty({
     description: 'Array of image URLs for the accommodation',
     type: [String],
@@ -95,10 +100,7 @@ export class CreateAccomodationListingDto {
   @IsOptional()
   image: string[];
 
-  @IsNotEmpty()
-  @IsNumber()
-  @IsPositive()
-  bookingFee: number;
+  
 
   
 

@@ -9,6 +9,7 @@ import { LoginDto } from 'src/auth/dto/LogIn.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 
+
 @Injectable()
 export class PropertyOwnerService {
 
@@ -72,7 +73,9 @@ export class PropertyOwnerService {
 
   async findOneById(id: string) {
     
-    const user = await this.propertyOwnerRepository.findOne({where:{id: id}});
+   // property-owner.service.ts
+const user = await this.propertyOwnerRepository.findOne({ where: { id: +id } });  // Cast to number using `+`
+
 
     if (!user)
       return null;

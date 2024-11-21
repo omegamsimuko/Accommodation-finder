@@ -31,11 +31,13 @@ export class AccomodationListing {
   @Column('simple-array', { nullable: true })
   additionalFees: string[];
 
+  @Column()
+  bookingFee: number;
+
   @Column('simple-array', { nullable: true })
   image: string[];
 
-  @Column()
-  bookingFee: number;
+  
   
 
   // Define the one-to-many relationship with bookings
