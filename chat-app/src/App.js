@@ -51,14 +51,7 @@ const App = () => {
           )}
         </nav>
 
-        {/* Routes for general pages */}
-        <Routes>
-          <Route path="/" element={<Home />} />  {/* Home page */}
-          <Route path="/register" element={<Register />} />  {/* Register page */}
-          <Route path="/login" element={<Login handleLogin={handleLogin} />} />  {/* Login page */}
-          <Route path="/profile" element={isAuthenticated ? <Profile /> : <Login handleLogin={handleLogin} />} />  {/* Profile page */}
-        </Routes>
-
+       
         {/* Booking System - Conditional Rendering (Only if logged in) */}
         <div className="space-y-8 mt-8">
           <h2 className="text-2xl font-bold mb-4">Booking System</h2>
