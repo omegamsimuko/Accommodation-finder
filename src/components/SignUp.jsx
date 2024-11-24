@@ -10,6 +10,7 @@ function SignUpForm() {
     const [password, setPassword] = useState('');
     const [firstName, setFirstname] = useState('');
     const [lastName, setLastname] = useState('');
+    const [selectedRole, setSelectedRole] = useState(null); // Track which role is selected
 
     const onSubmit = async (data) => {
         try {
@@ -18,6 +19,14 @@ function SignUpForm() {
         } catch (error) {
             console.error("Error:", error);
             alert("An error occurred, please try again.");
+        }
+    };
+
+    const handleCheckboxChange = (role) => {
+        if (selectedRole === role) {
+            setSelectedRole(null); // Uncheck the box if already selected
+        } else {
+            setSelectedRole(role); // Set the selected role
         }
     };
 
@@ -83,23 +92,26 @@ function SignUpForm() {
                     />
                     {errors.confirmPassword && <span className="text-red-500">{errors.confirmPassword.message}</span>}
 
-                    <div className="flex items-center flex space-x-4">
+                    <div className="flex items-center space-x-4">
                         <input
                             type="checkbox"
                             {...register("isAgent")}
                             className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                            checked={selectedRole === "agent"}
+                            onChange={() => handleCheckboxChange("agent")}
+                            disabled={selectedRole && selectedRole !== "agent"}
                         />
-                        <label className="ml-2 text-gray-700">
-                            Register as Agent
-                        </label>
+                        <label className="ml-2 text-gray-700">Register as Agent</label>
+
                         <input
                             type="checkbox"
                             {...register("isPropertyOwner")}
                             className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                            checked={selectedRole === "propertyOwner"}
+                            onChange={() => handleCheckboxChange("propertyOwner")}
+                            disabled={selectedRole && selectedRole !== "propertyOwner"}
                         />
-                        <label className="ml-2 text-gray-700">
-                            Register as PropertyOwner
-                        </label>
+                        <label className="ml-2 text-gray-700">Register as Property Owner</label>
                     </div>
                     <button
                         type="submit"
@@ -108,7 +120,7 @@ function SignUpForm() {
                         Submit
                     </button>
                 </form>
-                <div className='flex flex-row justify-center items-center mt-4'>
+                <div className="flex flex-row justify-center items-center mt-4">
                     <p className="text-center text-gray-500 mr-4">Already have an account?</p>
                     <Link to="/" className="text-skyblue-600 font-medium"> Sign In </Link>
                 </div>
