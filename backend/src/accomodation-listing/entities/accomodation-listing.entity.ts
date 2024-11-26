@@ -29,11 +29,11 @@ export class AccomodationListing {
   @Column()
   rentalFee: number;
 
-  @Column()
-  bookingFee: number;
-
   @Column('simple-array', { nullable: true })
   additionalFees: string[];
+
+  @Column()
+  bookingFee: number;
 
   @Column('simple-array', { nullable: true })
   image: string[];

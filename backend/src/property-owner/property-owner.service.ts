@@ -9,6 +9,7 @@ import { LoginDto } from 'src/auth/dto/LogIn.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 
+
 @Injectable()
 export class PropertyOwnerService {
 
@@ -19,7 +20,7 @@ export class PropertyOwnerService {
 
   ){}
 
-  async create(createPropertyOwnerDto: SignUpDto):Promise<{ id: string; role: string; email: string; token: string }> {
+  async create(createPropertyOwnerDto: SignUpDto):Promise<{ id: number; role: string; email: string; token: string }> {
     const name = (createPropertyOwnerDto.firstName + " " +createPropertyOwnerDto.lastName);
     const {email,password} = createPropertyOwnerDto;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -44,7 +45,7 @@ export class PropertyOwnerService {
   
   }
 
-  async validate(validateUser : LoginDto): Promise<{id: string; role: string; email: string;token: string}>{
+  async validate(validateUser : LoginDto): Promise<{id: number; role: string; email: string;token: string}>{
 
     const {email,password} = validateUser;
 
@@ -81,7 +82,7 @@ export class PropertyOwnerService {
     
   }
 
-  async findOneById(id: string): Promise<PropertyOwner> {
+  async findOneById(id: number): Promise<PropertyOwner> {
     return this.propertyOwnerRepository.findOne({
       where: { id },
       relations: ['listings'], // Fetch related listings as well

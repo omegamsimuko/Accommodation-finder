@@ -51,10 +51,6 @@ export class UpdateAccomodationListingDto extends PartialType(CreateAccomodation
     @IsArray()
     @IsString({ each: true })
     additionalFees?: string[]; // Additional fees (e.g., 'electricity: $100/month')
-  
-    @IsOptional() 
-    @IsUrl({}, { each: true })
-    image?: string[]; // Array of image URLs for the accommodation
 
  
   }
