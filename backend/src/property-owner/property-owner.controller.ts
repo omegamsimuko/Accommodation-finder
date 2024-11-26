@@ -4,7 +4,7 @@ import { CreatePropertyOwnerDto } from './dto/create-property-owner.dto';
 import { UpdatePropertyOwnerDto } from './dto/update-property-owner.dto';
 import { SignUpDto } from 'src/auth/dto/SignUp.dto';
 import { ApiTags } from '@nestjs/swagger';
-
+import { NotFoundException } from '@nestjs/common';
 @ApiTags('Property-Owner')
 @Controller('property-owner')
 export class PropertyOwnerController {
@@ -20,11 +20,20 @@ export class PropertyOwnerController {
     return this.propertyOwnerService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.propertyOwnerService.findOne(+id);
+  @Get('/:id/listings')
+  async getListingsByOwner(@Param('id') id: string) {
+    const propertyOwner = await this.propertyOwnerService.findOneById(id);
+    if (!propertyOwner) {
+      throw new NotFoundException('Property owner not found');
+    }
+    return propertyOwner;
   }
-
+  
+  @Get('/:id')
+  async findOne(@Param('id') id: string) {
+    return this.propertyOwnerService.findOneById(id); // Returns property owner with listings
+  }
+  
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePropertyOwnerDto: UpdatePropertyOwnerDto) {
     return this.propertyOwnerService.update(+id, updatePropertyOwnerDto);

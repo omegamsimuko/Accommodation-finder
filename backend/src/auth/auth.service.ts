@@ -15,7 +15,7 @@ export class AuthService {
   ){}
 
 
-  async create(createAuthDto: SignUpDto): Promise<{token: string}> {
+  async create(createAuthDto: SignUpDto): Promise<{id: string; role: string; email: string; token: string}> {
 
     const check = await this.agentService.findOneByEmail(createAuthDto);
     const check2 = await this.onwerService.findOneByEmail(createAuthDto);
@@ -37,7 +37,7 @@ export class AuthService {
   }
 
 
-  async validate(validateUser: LoginDto):Promise<{token: string}>{
+  async validate(validateUser: LoginDto):Promise<{id: string; role: string; email: string; token: string}>{
       
     const token = await this.agentService.validate(validateUser);
     if (token !== null )

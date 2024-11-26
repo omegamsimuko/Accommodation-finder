@@ -19,7 +19,7 @@ export class PropertyOwnerService {
 
   ){}
 
-  async create(createPropertyOwnerDto: SignUpDto):Promise<{token : string}> {
+  async create(createPropertyOwnerDto: SignUpDto):Promise<{ id: string; role: string; email: string; token: string }> {
     const name = (createPropertyOwnerDto.firstName + " " +createPropertyOwnerDto.lastName);
     const {email,password} = createPropertyOwnerDto;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -31,15 +31,20 @@ export class PropertyOwnerService {
 
     })
 
-    await this.propertyOwnerRepository.save(newOwner);
+     await this.propertyOwnerRepository.save(newOwner);
 
     const token = this.jwtService.sign({id: newOwner.id});
 
-    return {token};
+    return {
+      id: newOwner.id,
+      role: newOwner.role, 
+      email: newOwner.email,
+      token,
+    };
   
   }
 
-  async validate(validateUser : LoginDto): Promise<{token: string}>{
+  async validate(validateUser : LoginDto): Promise<{id: string; role: string; email: string;token: string}>{
 
     const {email,password} = validateUser;
 
@@ -55,7 +60,13 @@ export class PropertyOwnerService {
     
     const token = this.jwtService.sign({id: user.id});
 
-    return {token};
+    return {
+      id: user.id,
+      role: user.role, // Assuming the role is 'propertyOwner'
+      email: user.email,
+      token,
+    };
+  
 
   }
 
@@ -70,15 +81,11 @@ export class PropertyOwnerService {
     
   }
 
-  async findOneById(id: string) {
-    
-    const user = await this.propertyOwnerRepository.findOne({where:{id: id}});
-
-    if (!user)
-      return null;
-
-    return user;
-
+  async findOneById(id: string): Promise<PropertyOwner> {
+    return this.propertyOwnerRepository.findOne({
+      where: { id },
+      relations: ['listings'], // Fetch related listings as well
+    });
   }
 
   findAll() {

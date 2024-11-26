@@ -41,6 +41,11 @@ export class UpdateAccomodationListingDto extends PartialType(CreateAccomodation
     @IsNumber()
     @IsPositive()
     rentalFee?: number; // Monthly rental fee
+
+    @IsOptional() 
+    @IsNumber()
+    @IsPositive()
+    bookingFee?: number;
   
     @IsOptional() 
     @IsArray()
@@ -51,10 +56,7 @@ export class UpdateAccomodationListingDto extends PartialType(CreateAccomodation
     @IsUrl({}, { each: true })
     image?: string[]; // Array of image URLs for the accommodation
 
-    @IsOptional() 
-    @IsNumber()
-    @IsPositive()
-    bookingFee?: number;
+ 
   }
 
 

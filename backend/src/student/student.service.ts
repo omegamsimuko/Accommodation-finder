@@ -20,7 +20,7 @@ export class StudentService {
 ){}
 
 
-  async create(createStudentDto: SignUpDto):Promise<{token:string}> {
+  async create(createStudentDto: SignUpDto):Promise<{id: string; role: string; email: string;token:string}> {
     const name = (createStudentDto.firstName + " "+ createStudentDto.lastName);
     const {email,password} = createStudentDto;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -36,10 +36,16 @@ export class StudentService {
 
     const token = this.jwtService.sign({id: newStudent.id})
     
-    return {token};
+    return {
+      id: newStudent.id,
+      role: newStudent.role, 
+      email: newStudent.email,
+      token,
+    };
+  
   }
 
-  async validate(validateUser : LoginDto): Promise<{token: string}>{
+  async validate(validateUser : LoginDto): Promise<{id: string; role: string; email: string;token: string}>{
 
     const {email,password} = validateUser;
 
@@ -55,7 +61,14 @@ export class StudentService {
 
     const token = this.jwtService.sign({id: user.id});
 
-    return {token};
+   
+    return {
+      id: user.id,
+      role: user.role, // Assuming the role is 'propertyOwner'
+      email: user.email,
+      token,
+    };
+  
 
   }
 

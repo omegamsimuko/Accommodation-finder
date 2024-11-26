@@ -1,9 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column,OneToMany} from "typeorm";
 import { AccomodationListing } from "src/accomodation-listing/entities/accomodation-listing.entity";
+import { Booking } from "src/booking/entities/booking.entity";
 
 @Entity()
 export class PropertyOwner {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id : string;
 
     @Column()
@@ -20,5 +21,9 @@ export class PropertyOwner {
 
     @OneToMany(() => AccomodationListing, (listing) => listing.owner)
     listings: AccomodationListing[];
+
+    @OneToMany(() => Booking, (booking) => booking.owner)
+    bookings: Booking[];
+    
 
 }

@@ -29,18 +29,21 @@ export class AccomodationListing {
   @Column()
   rentalFee: number;
 
+  @Column()
+  bookingFee: number;
+
   @Column('simple-array', { nullable: true })
   additionalFees: string[];
 
   @Column('simple-array', { nullable: true })
   image: string[];
+  
+  @ManyToOne(() => PropertyOwner, (owner) => owner.listings) // Establish relationship with PropertyOwner
+  @JoinColumn({ name: 'ownerId' }) // Link with 'ownerId' column
+  owner: PropertyOwner; // Define property that refers to the owner
 
   @Column()
-  bookingFee: number;
-  
-  @ManyToOne(() => PropertyOwner, (owner) => owner.listings)
-  @JoinColumn({ name: 'ownerId' }) // This will create a column 'ownerId' to store the foreign key
-  owner: PropertyOwner;
+  ownerId: string; // Directly store the ownerId as a separate column for foreign key reference
 
   @ManyToOne(() => Agent, (agent) => agent.listings)
   @JoinColumn({ name: 'agentId' }) // Foreign key for Agent

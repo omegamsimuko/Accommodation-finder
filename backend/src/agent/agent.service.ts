@@ -19,7 +19,7 @@ export class AgentService {
   ){}
   
 
- async create(createAgentDto: SignUpDto): Promise<{token: string}> {
+ async create(createAgentDto: SignUpDto): Promise<{id: string; role: string; email: string;token: string}> {
     const name = (createAgentDto.firstName + " "+ createAgentDto.lastName);
     const {email,password} = createAgentDto;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -34,10 +34,17 @@ export class AgentService {
     await this.agentRepository.save(newAgent);
 
     const token = this.jwtService.sign({id: newAgent.id});
-    return {token};
+
+    return {
+      id: newAgent.id,
+      role: newAgent.role, // Assuming the role is 'propertyOwner'
+      email: newAgent.email,
+      token,
+    };
+  
   }
 
-  async validate(validateUser: LoginDto):Promise<{token: string}>{
+  async validate(validateUser: LoginDto):Promise<{id: string; role: string; email: string;token: string}>{
 
     const {email,password} = validateUser;
     
@@ -53,7 +60,13 @@ export class AgentService {
       
       const token = this.jwtService.sign({id: user.id});
       
-    return {token};
+      return {
+        id: user.id,
+        role: user.role, // Assuming the role is 'propertyOwner'
+        email: user.email,
+        token,
+      };
+    
 
   }
   

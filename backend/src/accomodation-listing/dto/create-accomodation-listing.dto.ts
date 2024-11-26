@@ -75,6 +75,12 @@ export class CreateAccomodationListingDto {
   @IsPositive()
   rentalFee: number;
 
+  
+  @IsNotEmpty()
+  @IsNumber()
+  @IsPositive()
+  bookingFee: number;
+
   @ApiProperty({
     description: 'Additional fees (e.g., electricity: $100/month)',
     type: [String],
@@ -95,11 +101,8 @@ export class CreateAccomodationListingDto {
   @IsOptional()
   image: string[];
 
+  @IsString()
   @IsNotEmpty()
-  @IsNumber()
-  @IsPositive()
-  bookingFee: number;
-
+  ownerId: string;
   
-
 }

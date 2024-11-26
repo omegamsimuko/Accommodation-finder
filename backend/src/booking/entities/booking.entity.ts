@@ -3,6 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 't
 import { PropertyOwner } from 'src/property-owner/entities/property-owner.entity'; // Ensure correct import path
 import { AccomodationListing } from 'src/accomodation-listing/entities/accomodation-listing.entity';
 import { Student } from 'src/student/entities/student.entity';  // Assuming you have a Student entity
+import { Agent } from 'src/agent/entities/agent.entity';
 
 @Entity('bookings')
 export class Booking {
@@ -12,7 +13,7 @@ export class Booking {
   @Column()
   accomodationId: string;  // Reference to the accommodation
 
-  @ManyToOne(() => AccomodationListing, (accommodationListing) => accommodationListing.bookings)
+  @ManyToOne(() => AccomodationListing, (accomodationListing) => accomodationListing.bookings)
   @JoinColumn({ name: 'accommodationId' })
   accommodation: AccomodationListing;  // Link to the Accommodation entity
 
@@ -37,4 +38,9 @@ export class Booking {
   @ManyToOne(() => PropertyOwner, (owner) => owner.bookings)
   @JoinColumn({ name: 'ownerId' })
   owner: PropertyOwner;
+
+  @ManyToOne(() => Agent, (agent) => agent.bookings)
+  @JoinColumn({ name: 'agentId' })
+  agent: Agent;
+  
 }
