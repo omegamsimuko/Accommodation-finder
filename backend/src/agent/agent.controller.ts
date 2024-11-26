@@ -20,8 +20,8 @@ export class AgentController {
     return this.agentService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get('/:id')
+  findOne(@Param('id') id: number) {
     return this.agentService.findOne(+id);
   }
 

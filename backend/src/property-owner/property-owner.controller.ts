@@ -21,7 +21,7 @@ export class PropertyOwnerController {
   }
 
   @Get('/:id/listings')
-  async getListingsByOwner(@Param('id') id: string) {
+  async getListingsByOwner(@Param('id') id: number) {
     const propertyOwner = await this.propertyOwnerService.findOneById(id);
     if (!propertyOwner) {
       throw new NotFoundException('Property owner not found');
@@ -30,7 +30,7 @@ export class PropertyOwnerController {
   }
   
   @Get('/:id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: number) {
     return this.propertyOwnerService.findOneById(id); // Returns property owner with listings
   }
   

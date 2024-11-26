@@ -6,7 +6,7 @@ import { Booking } from "src/booking/entities/booking.entity";
 export class Agent {
     
     @PrimaryGeneratedColumn()
-    id : string;
+    id : number;
 
     @Column()
     name: string;

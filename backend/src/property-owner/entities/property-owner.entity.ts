@@ -16,8 +16,8 @@ export class PropertyOwner {
   @Column()
   password: string;
 
-  @Column()
-  role: 'property-onwer'
+  @Column({ default: 'property-owner' })
+  role: string;
 
   // One-to-many relationship with Booking (a property owner can have multiple bookings)
   @OneToMany(() => Booking, (booking) => booking.owner)

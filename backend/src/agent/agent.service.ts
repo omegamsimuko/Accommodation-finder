@@ -19,7 +19,7 @@ export class AgentService {
   ){}
   
 
- async create(createAgentDto: SignUpDto): Promise<{id: string; role: string; email: string;token: string}> {
+ async create(createAgentDto: SignUpDto): Promise<{id: number; role: string; email: string;token: string}> {
     const name = (createAgentDto.firstName + " "+ createAgentDto.lastName);
     const {email,password} = createAgentDto;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -44,7 +44,7 @@ export class AgentService {
   
   }
 
-  async validate(validateUser: LoginDto):Promise<{id: string; role: string; email: string;token: string}>{
+  async validate(validateUser: LoginDto):Promise<{id: number; role: string; email: string;token: string}>{
 
     const {email,password} = validateUser;
     
@@ -82,7 +82,7 @@ export class AgentService {
   }
 
   
-  async findOneById(id: string) {
+  async findOneById(id: number) {
     
     const user = await this.agentRepository.findOne({where:{id: id}});
 

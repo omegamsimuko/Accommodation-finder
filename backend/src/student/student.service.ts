@@ -20,7 +20,7 @@ export class StudentService {
 ){}
 
 
-  async create(createStudentDto: SignUpDto):Promise<{id: string; role: string; email: string;token:string}> {
+  async create(createStudentDto: SignUpDto):Promise<{id: number; role: string; email: string;token:string}> {
     const name = (createStudentDto.firstName + " "+ createStudentDto.lastName);
     const {email,password} = createStudentDto;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -45,7 +45,7 @@ export class StudentService {
   
   }
 
-  async validate(validateUser : LoginDto): Promise<{id: string; role: string; email: string;token: string}>{
+  async validate(validateUser : LoginDto): Promise<{id: number; role: string; email: string;token: string}>{
 
     const {email,password} = validateUser;
 
@@ -84,16 +84,16 @@ export class StudentService {
     
   }
 
-  async findOneById(id: string) {
-    
-    const user = await this.studentRepository.findOne({where:{id: id}});
-
-    if (!user)
-      return null;
-
-    return user;
-
+  async findOneById(id: number) {
+    const user = await this.studentRepository.findOne({ where: { id } });
+  
+    if (!user) {
+      return null; // User not found
+    }
+  
+    return user; // Return the user
   }
+  
 
   
   findAll() {
