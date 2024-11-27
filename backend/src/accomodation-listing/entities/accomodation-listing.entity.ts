@@ -43,7 +43,7 @@ export class AccomodationListing {
   owner: PropertyOwner; // Define property that refers to the owner
 
   @Column()
-  ownerId: string; // Directly store the ownerId as a separate column for foreign key reference
+  ownerId: number; // Directly store the ownerId as a separate column for foreign key reference
 
   @ManyToOne(() => Agent, (agent) => agent.listings)
   @JoinColumn({ name: 'agentId' }) // Foreign key for Agent
