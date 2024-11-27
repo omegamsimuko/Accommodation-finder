@@ -1,20 +1,21 @@
 // create-booking.dto.ts
-import { IsString, IsDateString, IsDecimal, IsOptional } from 'class-validator';
+import { IsString, IsDateString, IsDecimal, IsOptional, IsEmail, IsNumber } from 'class-validator';
 
 export class CreateBookingDto {
   @IsString()
-  accommodationId: string;
-
-  @IsDateString()
-  checkInDate: string;
-
-  @IsDateString()
-  checkOutDate: string;
-
-  @IsDecimal()
-  totalPrice: number;
+  fullName: string;
 
   @IsString()
-  @IsOptional()
-  status: string; // 'pending' by default
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  specialRequest: string;
+
+  @IsNumber()
+  accommodationListingId: string;
+  
+  @IsNumber()
+  studentId: number;
+  
 }

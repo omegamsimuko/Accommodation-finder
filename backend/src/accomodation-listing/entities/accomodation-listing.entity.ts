@@ -51,7 +51,7 @@ export class AccomodationListing {
 
 
   // Define the one-to-many relationship with bookings
-  @OneToMany(() => Booking, (booking) => booking.accommodation)
+  @OneToMany(() => Booking, (booking) => booking.accommodationListing)
   bookings: Booking[];
 
   @ManyToOne(() => PropertyOwner, (propertyOwner) => propertyOwner.bookings)

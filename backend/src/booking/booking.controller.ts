@@ -1,8 +1,9 @@
-import { Controller, Post, Body, Param, Patch, Get } from '@nestjs/common';
+import { Controller, Post, Body, Param, Patch, Get,HttpException,HttpStatus } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Booking } from './entities/booking.entity';
 
 @ApiTags('Booking')
 @Controller('bookings')
@@ -11,8 +12,8 @@ export class BookingController {
 
   // Create a new booking (for student)
   @Post()
-  create(@Body() createBookingDto: CreateBookingDto, @Param('studentId') studentId: string) {
-    return this.bookingService.create(createBookingDto, studentId);
+  async create(@Body() createBookingDto: CreateBookingDto): Promise<Booking> {
+    return this.bookingService.create(createBookingDto);
   }
 
   // Get all bookings
@@ -35,7 +36,11 @@ export class BookingController {
 
   // Confirm a booking (for property owner or admin)
   @Patch(':id/confirm')
-  confirm(@Param('id') id: number) {
-    return this.bookingService.confirm(id);
+  async confirmBooking(@Param('id') id: number) {
+    try {
+      return await this.bookingService.confirmBooking(id);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }

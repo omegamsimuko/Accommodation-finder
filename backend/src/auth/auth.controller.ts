@@ -12,15 +12,15 @@ export class AuthController {
   constructor( private readonly authService: AuthService) {}
 
   @Post('/signup')
-  create(@Body() createUser: SignUpDto):Promise<{id: string; role: string; email: string;token: string}> {
+  create(@Body() createUser: SignUpDto):Promise<{id: number; role: string; email: string;token: string}> {
      return this.authService.create(createUser);
 
   }
 
   @Post('/login')
-  validate(@Body() validateUser: LoginDto ):Promise<{id: string; role: string; email: string;token: string}>{
+  validate(@Body() validateUser: LoginDto ):Promise<{id: number; role: string; email: string;token: string}>{
     return this.authService.validate(validateUser);
     
   }
-
+s
 }

@@ -1,19 +1,21 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BookingService } from './booking.service';
 import { Booking } from './entities/booking.entity';
 import { AccomodationListing } from 'src/accomodation-listing/entities/accomodation-listing.entity';
-import { Student } from 'src/student/entities/student.entity';  // Ensure Student is imported here
-import { StudentModule } from 'src/student/student.module';  // Import the StudentModule
-import { PropertyOwnerModule } from 'src/property-owner/property-owner.module';
+import { Student } from 'src/student/entities/student.entity';
+import { PropertyOwner } from 'src/property-owner/entities/property-owner.entity'; // Import PropertyOwner entity
+import { BookingService } from './booking.service';
 import { BookingController } from './booking.controller';
-import { StudentService } from 'src/student/student.service';
+import { StudentModule } from '../student/student.module'; // Ensure StudentModule is imported
+import { PropertyOwnerModule } from '../property-owner/property-owner.module'; // Ensure PropertyOwnerModule is imported
+
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Booking, AccomodationListing, Student]),  // Register Student here if using TypeOrmModule
-    StudentModule,  PropertyOwnerModule// Ensure StudentModule is imported
+    TypeOrmModule.forFeature([Booking, AccomodationListing, Student, PropertyOwner]), // Register PropertyOwner here
+    StudentModule,
+    PropertyOwnerModule,
   ],
-  providers: [BookingService, StudentService],  // Inject providers like BookingService and StudentService
-  controllers: [BookingController],  // Controller for handling routes
+  providers: [BookingService], // Ensure only necessary services are here
+  controllers: [BookingController],
 })
 export class BookingModule {}

@@ -23,8 +23,8 @@ export class Agent {
     @OneToMany(() => AccomodationListing, (listing) => listing.agent)
     listings: AccomodationListing[];
 
-    @OneToMany(() => Booking, (booking) => booking.agent)
-    bookings: Booking[];
+   // @OneToMany(() => Booking, (booking) => booking.agent)
+    //bookings: Booking[];
     
 
 }

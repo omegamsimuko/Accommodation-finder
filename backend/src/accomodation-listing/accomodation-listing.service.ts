@@ -15,11 +15,12 @@ export class AccomodationListingService {
   ) {}
 
   // Find by ID
-  async findById(id: string): Promise<AccomodationListing | null> {
+  async findById(id: string): Promise<AccomodationListing> {
     const accommodation = await this.accommodationRepository.findOne({ where: { id } });
     if (!accommodation) {
       throw new HttpException('Accommodation not found', HttpStatus.NOT_FOUND);
     }
+    console.log("reached")
     return accommodation;
   }
 

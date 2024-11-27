@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column,OneToMany} from "typeorm";
 import { AccomodationListing } from "src/accomodation-listing/entities/accomodation-listing.entity";
 import { Booking } from "src/booking/entities/booking.entity";
 
-@Entity('property_owners')
+@Entity('property_owner')
 export class PropertyOwner {
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,7 +20,7 @@ export class PropertyOwner {
   role: string;
 
   // One-to-many relationship with Booking (a property owner can have multiple bookings)
-  @OneToMany(() => Booking, (booking) => booking.owner)
+  @OneToMany(() => Booking, (booking) => booking.propertyOwner)
   bookings: Booking[];
 
   // One-to-many relationship with AccommodationListing (a property owner can have multiple listings)

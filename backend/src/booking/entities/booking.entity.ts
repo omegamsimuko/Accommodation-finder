@@ -1,9 +1,7 @@
-// booking.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { PropertyOwner } from 'src/property-owner/entities/property-owner.entity'; // Ensure correct import path
+import { Student } from 'src/student/entities/student.entity';
 import { AccomodationListing } from 'src/accomodation-listing/entities/accomodation-listing.entity';
-import { Student } from 'src/student/entities/student.entity';  // Assuming you have a Student entity
-import { Agent } from 'src/agent/entities/agent.entity';
+import { PropertyOwner } from 'src/property-owner/entities/property-owner.entity';
 
 @Entity('bookings')
 export class Booking {
@@ -11,36 +9,37 @@ export class Booking {
   id: number;
 
   @Column()
-  accomodationId: string;  // Reference to the accommodation
+  fullName: string;
 
-  @ManyToOne(() => AccomodationListing, (accomodationListing) => accomodationListing.bookings)
-  @JoinColumn({ name: 'accommodationId' })
-  accommodation: AccomodationListing;  // Link to the Accommodation entity
+  @Column()
+  email: string;
 
-  @Column('date')
-  checkInDate: string;
-
-  @Column('date')
-  checkOutDate: string;
-
-  @Column('decimal')
-  totalPrice: number;
+  @Column('text', { nullable: true })
+  specialRequest: string;
 
   @Column({ default: 'pending' })
   status: string;
 
-  // Many-to-one relation with Student (a booking belongs to one student)
+  @ManyToOne(() => AccomodationListing, { eager: true })
+  @JoinColumn({ name: 'accommodationListingId' })
+  accommodationListing: AccomodationListing;
+
   @ManyToOne(() => Student, (student) => student.bookings)
   @JoinColumn({ name: 'studentId' })
   student: Student;
 
-  // Many-to-one relation with PropertyOwner (a booking belongs to one property owner)
   @ManyToOne(() => PropertyOwner, (owner) => owner.bookings)
   @JoinColumn({ name: 'ownerId' })
-  owner: PropertyOwner;
+  propertyOwner: PropertyOwner;
 
-  @ManyToOne(() => Agent, (agent) => agent.bookings)
-  @JoinColumn({ name: 'agentId' })
-  agent: Agent;
+
+  @Column()
+  accommodationListingId: number;
+
+  @Column()
+  studentId: number;
+
+  @Column()
+  ownerId: number;
   
 }

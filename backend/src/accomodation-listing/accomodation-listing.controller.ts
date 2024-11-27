@@ -10,7 +10,7 @@ import { Searchfiltering } from 'src/searchfiltering/entities/searchfiltering.en
 @Controller('accomodation-listing')
 export class AccomodationListingController {
   constructor(private readonly accomodationListingService: AccomodationListingService) {}
-  @Get(':id')
+  @Get('/:id')
   async findOne(@Param('id') id: string) {
     return this.accomodationListingService.findById(id);
   }
