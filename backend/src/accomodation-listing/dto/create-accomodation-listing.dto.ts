@@ -102,6 +102,6 @@ export class CreateAccomodationListingDto {
 
   @IsString()
   @IsNotEmpty()
-  ownerId: string;
+  ownerId: number;
   
 }

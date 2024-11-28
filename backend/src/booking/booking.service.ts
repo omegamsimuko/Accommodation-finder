@@ -38,13 +38,15 @@ export class BookingService {
       throw new Error('Student not found');
     }
   
+    const ownerId = accommodationListing.ownerId;
     // Create and save the booking
     const booking = this.bookingRepository.create({
       fullName,
       email,
       specialRequest,
       accommodationListing, // Pass full object
-      student, // Pass full object
+      student,
+      ownerId : ownerId // Pass id
      // Pass full object
     });
   
