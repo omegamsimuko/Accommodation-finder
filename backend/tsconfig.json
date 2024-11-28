@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "CommonJS",   // Ensure CommonJS module format for serverless functions
+      "outDir": "./dist",      // Output compiled files into 'dist' folder
+      "rootDir": "./src",      // Source files are in 'src'
+      "esModuleInterop": true, // Enable esModuleInterop for compatibility with ES6 imports
+      "skipLibCheck": true,    // Skip type checking of declaration files for faster builds
+      "strict": true,          // Enable strict mode
+      "resolveJsonModule": true,
+      "moduleResolution": "node"
+    },
+    "include": [
+      "src/**/*.ts"   // Include all TypeScript files in the 'src' folder
+    ],
+    "exclude": [
+      "node_modules", "dist"  // Exclude compiled files and node_modules
+    ]
+  }
+  
