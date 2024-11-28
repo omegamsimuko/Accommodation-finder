@@ -1,17 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { VercelRequest, VercelResponse } from '@vercel/node';
+import { ExpressAdapter } from '@nestjs/platform-express';
+import * as express from 'express';
 
 async function bootstrap() {
+  const server = express(); // Create an express instance
 
+  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
 
-  
-  const app = await NestFactory.create(AppModule);
-  
-
-
-   app.enableCors()
-  
+  app.enableCors();
 
   // Swagger setup
   const options = new DocumentBuilder()
@@ -23,6 +22,15 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document); // Swagger UI at /swagger
 
-  await app.listen(3001);
+  // Instead of app.listen, use serverless handler for Vercel
+  app.init(); // Initializes the NestJS app
+
+  // Vercel serverless handler
+  return (req: VercelRequest, res: VercelResponse) => {
+    return server(req, res); // Forward request to express server
+  };
 }
-bootstrap();
+
+bootstrap().then(() => {
+  console.log('NestJS app is ready to handle requests!');
+});

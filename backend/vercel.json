@@ -1,0 +1,13 @@
+{
+    "version": 2,
+    "functions": {
+      "api/**.ts": {
+        "runtime": "nodejs16.x"
+      }
+    },
+    "routes": {
+      "/swagger": "/api/swagger",
+      "/**": "/api/index.ts"
+    }
+  }
+  
